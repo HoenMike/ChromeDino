@@ -4,8 +4,5 @@
 
 ## Asset sources
 
-    - Dinosaur: https://demching.itch.io/dino-family
-    - Cactus: NOT HAVE YET
-    - cloud: NOT HAVE YET
-    - land: NOT HAVE YET
-    - sfx: NOT HAVE YET
+    - Sprite: We use F12 on https://chromedino.com/ to get the sprite sheet and cut it out using Photoshop.
+    - Sound: ??
