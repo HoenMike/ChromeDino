@@ -9,10 +9,8 @@ import javax.swing.JPanel;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 
-    // for testing
-    private float x = 0;
-    private float y = 0;
-    private float speedY = 0;
+    public static final float GRAVITY = 0.1f;
+    public static final float FLOOR = 300f;
 
     private Thread thread;
 
@@ -28,8 +26,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public void run() {
         while (true) {
             try {
-                y += 1;
-                y += speedY;
+
                 repaint();
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -43,7 +40,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.BLACK);
-        g.drawRect((int) x, (int) y, 60, 120);
+        g.drawLine(0, (int) FLOOR, getWidth(), (int) FLOOR);
     }
 
     @Override
@@ -54,10 +51,21 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         System.out.println("Key pressed");
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         System.out.println("Key released");
     }
+
+    // getter & setter
+    public static float getGravity() {
+        return GRAVITY;
+    }
+
+    public static float getFloor() {
+        return FLOOR;
+    }
+
 }
