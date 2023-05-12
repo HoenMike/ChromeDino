@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import Handler.Animation;
 import Handler.Resource;
 
-import static UserInterface.GameScreen.FLOOR;
+import static UserInterface.GameScreen.GROUND;
 import static UserInterface.GameScreen.GRAVITY;
 
 public class Dino {
@@ -20,15 +20,17 @@ public class Dino {
 
     // constrictor
     public Dino() {
-        dinoRun = new Animation();
-        dinoRun.AddFrame(Resource.getResourceImage("data/dino1.png"));
+        dinoRun = new Animation(200);
+        dinoRun.AddFrame(Resource.getResourceImage("data/dinoRun1.png"));
+        dinoRun.AddFrame(Resource.getResourceImage("data/dinoRun2.png"));
     }
 
     public void update() {
+        dinoRun.update();
         // for jumping
-        if (y >= FLOOR - dinoRun.getFrame().getHeight()) {
-            speedY = 0;
-            y = FLOOR - dinoRun.getFrame().getHeight();
+        if (y >= GROUND - dinoRun.getFrame().getHeight()) {
+            setSpeedY(0);
+            setY(GROUND - dinoRun.getFrame().getHeight());
         } else {
             setSpeedY(speedY += GRAVITY);
             setY(y += speedY);
@@ -42,7 +44,6 @@ public class Dino {
 
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
-        g.drawRect((int) x, (int) y, dinoRun.getFrame().getWidth(), dinoRun.getFrame().getHeight());
         g.drawImage(dinoRun.getFrame(), (int) x, (int) y, null);
     }
 

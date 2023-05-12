@@ -8,13 +8,15 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 import GameObject.Dino;
+import GameObject.Ground;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 
     public static final float GRAVITY = 0.1f;
-    public static final float FLOOR = 300f;
+    public static final float GROUND = 110;
 
     private Dino dino;
+    private Ground ground;
 
     private Thread thread;
 
@@ -22,6 +24,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public GameScreen() {
         thread = new Thread(this);
         dino = new Dino();
+        dino.setX(50);
+        ground = new Ground(this);
     }
 
     public void startGame() {
@@ -33,6 +37,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         while (true) {
             try {
                 dino.update();
+                ground.update();
                 repaint();
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -46,7 +51,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.BLACK);
-        g.drawLine(0, (int) FLOOR, getWidth(), (int) FLOOR);
+        // g.drawLine(0, (int) GROUND, getWidth(), (int) GROUND);
+        ground.draw(g);
         dino.draw(g);
     }
 
@@ -72,8 +78,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         return GRAVITY;
     }
 
-    public static float getFloor() {
-        return FLOOR;
+    public static float getGround() {
+        return GROUND;
     }
 
 }
