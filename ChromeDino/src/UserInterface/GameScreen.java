@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import GameObject.Dino;
 import GameObject.Ground;
+import GameObject.Clouds;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 
@@ -17,6 +18,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
     private Dino dino;
     private Ground ground;
+    private Clouds cloud;
 
     private Thread thread;
 
@@ -26,6 +28,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         dino = new Dino();
         dino.setX(50);
         ground = new Ground(this);
+        cloud = new Clouds();
     }
 
     public void startGame() {
@@ -36,8 +39,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public void run() {
         while (true) {
             try {
-                dino.update();
+                cloud.update();
                 ground.update();
+                dino.update();
                 repaint();
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -48,10 +52,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void paint(Graphics g) {
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.BLACK);
         // g.drawLine(0, (int) GROUND, getWidth(), (int) GROUND);
+        cloud.draw(g);
         ground.draw(g);
         dino.draw(g);
     }

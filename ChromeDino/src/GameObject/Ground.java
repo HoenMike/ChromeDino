@@ -1,12 +1,12 @@
 package GameObject;
 
+import static UserInterface.GameScreen.GROUND;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.ArrayList;
-
-import static UserInterface.GameScreen.GROUND;
 
 import Handler.Resource;
 import UserInterface.GameScreen;
@@ -35,7 +35,7 @@ public class Ground {
 
     public void update() {
         for (ImageGround imageGround : listImage) {
-            imageGround.xPosition--;
+            imageGround.xPosition -= 2;
         }
         // Delete the Ground image that passed the left side of the screen and add it to
         // the Right side of the screen
