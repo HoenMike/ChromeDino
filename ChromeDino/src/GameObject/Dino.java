@@ -3,23 +3,32 @@ package GameObject;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import Handler.Animation;
+import Handler.Resource;
+
 import static UserInterface.GameScreen.FLOOR;
 import static UserInterface.GameScreen.GRAVITY;
 
-public class Player {
+public class Dino {
     public static final float JUMP_FORCE = -4;
 
     private float x = 0;
     private float y = 0;
     private float speedY = 0;
-    private int playerHeight = 120;
-    private int playerWidth = 60;
+
+    private Animation dinoRun;
+
+    // constrictor
+    public Dino() {
+        dinoRun = new Animation();
+        dinoRun.AddFrame(Resource.getResourceImage("data/dino1.png"));
+    }
 
     public void update() {
         // for jumping
-        if (y >= FLOOR - getPlayerHeight()) {
-            setSpeedY(0);
-            setY(FLOOR - getPlayerHeight());
+        if (y >= FLOOR - dinoRun.getFrame().getHeight()) {
+            speedY = 0;
+            y = FLOOR - dinoRun.getFrame().getHeight();
         } else {
             setSpeedY(speedY += GRAVITY);
             setY(y += speedY);
@@ -33,7 +42,8 @@ public class Player {
 
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
-        g.drawRect((int) x, (int) y, getPlayerWidth(), getPlayerHeight());
+        g.drawRect((int) x, (int) y, dinoRun.getFrame().getWidth(), dinoRun.getFrame().getHeight());
+        g.drawImage(dinoRun.getFrame(), (int) x, (int) y, null);
     }
 
     public static float getJumpForce() {
@@ -62,22 +72,6 @@ public class Player {
 
     public void setSpeedY(float speedY) {
         this.speedY = speedY;
-    }
-
-    public int getPlayerHeight() {
-        return playerHeight;
-    }
-
-    public void setPlayerHeight(int playerHeight) {
-        this.playerHeight = playerHeight;
-    }
-
-    public int getPlayerWidth() {
-        return playerWidth;
-    }
-
-    public void setPlayerWidth(int playerWidth) {
-        this.playerWidth = playerWidth;
     }
 
 }
