@@ -1,28 +1,31 @@
 package GameObject;
 
+import static UserInterface.GameScreen.GRAVITY;
+import static UserInterface.GameScreen.GROUND;
+
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import Handler.Animation;
 import Handler.Resource;
 
-import static UserInterface.GameScreen.GROUND;
-import static UserInterface.GameScreen.GRAVITY;
-
 public class Dino {
     public static final float JUMP_FORCE = -4;
 
-    private float x = 0;
-    private float y = 0;
+    private float x = 50;
+    private float y = 67;
     private float speedY = 0;
 
     private Animation dinoRun;
+    private Rectangle rect;
 
     // constrictor
     public Dino() {
         dinoRun = new Animation(200);
         dinoRun.AddFrame(Resource.getResourceImage("data/dinoRun1.png"));
         dinoRun.AddFrame(Resource.getResourceImage("data/dinoRun2.png"));
+        rect = new Rectangle();
     }
 
     public void update() {
@@ -35,6 +38,14 @@ public class Dino {
             setSpeedY(speedY += GRAVITY);
             setY(y += speedY);
         }
+        rect.x = (int) x;
+        rect.y = (int) y;
+        rect.width = dinoRun.getFrame().getWidth();
+        rect.height = dinoRun.getFrame().getHeight();
+    }
+
+    public Rectangle getBound() {
+        return rect;
     }
 
     public void jump() {
