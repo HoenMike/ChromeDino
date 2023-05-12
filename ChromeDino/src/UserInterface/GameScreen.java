@@ -7,15 +7,21 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
+import GameObject.Player;
+
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 
     public static final float GRAVITY = 0.1f;
     public static final float FLOOR = 300f;
 
+    private Player player;
+
     private Thread thread;
 
+    // constructor
     public GameScreen() {
         thread = new Thread(this);
+        player = new Player();
     }
 
     public void startGame() {
@@ -26,7 +32,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public void run() {
         while (true) {
             try {
-
+                player.update();
                 repaint();
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -41,6 +47,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.BLACK);
         g.drawLine(0, (int) FLOOR, getWidth(), (int) FLOOR);
+        player.draw(g);
     }
 
     @Override
@@ -51,6 +58,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         System.out.println("Key pressed");
+        player.jump();
 
     }
 

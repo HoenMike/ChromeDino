@@ -16,6 +16,7 @@ public class Player {
     private int playerWidth = 60;
 
     public void update() {
+        // for jumping
         if (y >= FLOOR - getPlayerHeight()) {
             setSpeedY(0);
             setY(FLOOR - getPlayerHeight());
