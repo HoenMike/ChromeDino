@@ -19,6 +19,7 @@ public class Dino {
 
     private Animation dinoRun;
     private Rectangle rect;
+    private boolean isAlive = true;
 
     // constrictor
     public Dino() {
@@ -44,7 +45,7 @@ public class Dino {
         rect.height = dinoRun.getFrame().getHeight();
     }
 
-    public Rectangle getBound() {
+    public Rectangle getCollisionShape() {
         return rect;
     }
 
@@ -84,6 +85,14 @@ public class Dino {
 
     public void setSpeedY(float speedY) {
         this.speedY = speedY;
+    }
+
+    public void setAlive(boolean state) {
+        isAlive = state;
+    }
+
+    public boolean getAlive() {
+        return isAlive;
     }
 
 }
