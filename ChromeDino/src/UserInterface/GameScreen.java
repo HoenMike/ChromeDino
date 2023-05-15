@@ -1,11 +1,10 @@
 package UserInterface;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -16,14 +15,14 @@ import GameObject.EnemyManager;
 import GameObject.Ground;
 import Handler.Resource;
 
-public class GameScreen extends JPanel implements Runnable, KeyListener, MouseListener {
+public class GameScreen extends JPanel implements Runnable, KeyListener {
     // Game states
-    public static final int GAME_STARTING_STATE = 0;
-    public static final int GAME_PLAYING_STATE = 1;
+    public static final int STARTING_STATE = 0;
+    public static final int PLAYING_STATE = 1;
     public static final int GAME_OVER_STATE = 2;
 
     // Constants
-    public static final float GRAVITY = 0.1f;
+    public static final float GRAVITY = 0.3f;
     public static final float GROUND = 110;
 
     // Game objects
@@ -34,9 +33,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener, MouseLi
 
     // Scores
     private int score;
+    private int highScore;
 
     // Game state
-    private int gameState = GAME_STARTING_STATE;
+    private int gameState = STARTING_STATE;
 
     // Game images
     private BufferedImage imageGameOverText;
@@ -76,11 +76,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener, MouseLi
 
     public void update() {
         switch (gameState) {
-            case GAME_PLAYING_STATE:
+            case PLAYING_STATE:
                 cloud.update();
                 ground.update();
                 dino.update();
                 enemyManager.update();
+                if (score > highScore) {
+                    highScore = score;
+                }
                 if (!dino.getAlive()) {
                     gameState = GAME_OVER_STATE;
                 }
@@ -97,7 +100,15 @@ public class GameScreen extends JPanel implements Runnable, KeyListener, MouseLi
     };
 
     private void drawScore(Graphics g) {
-        g.drawString("HighScore " + String.valueOf(score), 480, 20);
+        String highScoreText = "High Score: " + String.valueOf(highScore);
+        String currentScoreText = "Score: " + String.valueOf(score);
+        FontMetrics metrics = g.getFontMetrics();
+        int highScoreTextWidth = metrics.stringWidth(highScoreText);
+        int currentScoreTextWidth = metrics.stringWidth(currentScoreText);
+        int textX = getWidth() - Math.max(highScoreTextWidth, currentScoreTextWidth) - 20;
+        int textY = 20;
+        g.drawString(highScoreText, textX, textY);
+        g.drawString(currentScoreText, textX, textY + metrics.getHeight());
     }
 
     private void drawGamePlayingState(Graphics g) {
@@ -136,10 +147,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener, MouseLi
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
         switch (gameState) {
-            case GAME_STARTING_STATE:
+            case STARTING_STATE:
                 dino.draw(g);
                 break;
-            case GAME_PLAYING_STATE:
+            case PLAYING_STATE:
                 drawGamePlayingState(g);
                 break;
             case GAME_OVER_STATE:
@@ -155,7 +166,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener, MouseLi
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (gameState == GAME_PLAYING_STATE) {
+        if (gameState == PLAYING_STATE) {
             dino.jump();
         }
     }
@@ -164,46 +175,13 @@ public class GameScreen extends JPanel implements Runnable, KeyListener, MouseLi
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_SPACE:
-                if (gameState == GAME_STARTING_STATE) {
-                    setGameState(GAME_PLAYING_STATE);
+                if (gameState == STARTING_STATE) {
+                    setGameState(PLAYING_STATE);
+                } else if (gameState == GAME_OVER_STATE) {
+                    resetGame();
                 }
                 break;
         }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (gameState == GAME_OVER_STATE) {
-            int centerX = getWidth() / 2;
-            int replayButtonX = centerX - imageReplayButton.getWidth() / 2;
-            int replayButtonY = getHeight() / 2 + imageGameOverText.getHeight() / 2 + 10;
-            int replayButtonWidth = imageReplayButton.getWidth();
-            int replayButtonHeight = imageReplayButton.getHeight();
-            if (e.getX() >= replayButtonX && e.getX() <= replayButtonX + replayButtonWidth
-                    && e.getY() >= replayButtonY && e.getY() <= replayButtonY + replayButtonHeight) {
-                resetGame();
-            }
-        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 
     private void resetGame() {
@@ -211,7 +189,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener, MouseLi
         dino.setX(50);
         dino.setY(67);
         setScore(0);
-        setGameState(GAME_STARTING_STATE);
+        setGameState(STARTING_STATE);
         enemyManager.reset();
     }
 

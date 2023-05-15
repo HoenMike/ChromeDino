@@ -11,7 +11,7 @@ import Handler.Animation;
 import Handler.Resource;
 
 public class Dino {
-    public static final float JUMP_FORCE = -4;
+    public static final float JUMP_FORCE = -6;
 
     private float x = 50;
     private float y = 67;
@@ -50,8 +50,10 @@ public class Dino {
     }
 
     public void jump() {
-        setSpeedY(JUMP_FORCE);
-        y += getSpeedY();
+        if (y <= 67 && y >= 60) {
+            setSpeedY(JUMP_FORCE);
+            y += getSpeedY();
+        }
     }
 
     public void draw(Graphics g) {
