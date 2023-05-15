@@ -18,8 +18,8 @@ public class EnemyManager {
     public EnemyManager(Dino dino) {
         this.dino = dino;
         enemy = new ArrayList<Enemy>();
-        imageCactus1 = Resource.getResourceImage("data/cactus1.png");
-        imageCactus2 = Resource.getResourceImage("data/cactus2.png");
+        imageCactus1 = Resource.getResourceImage("ChromeDino/data/cactus1.png");
+        imageCactus2 = Resource.getResourceImage("ChromeDino/data/cactus2.png");
         random = new Random();
         enemy.add(getRandomCactus());
     }

@@ -24,8 +24,8 @@ public class Dino {
     // constrictor
     public Dino() {
         dinoRun = new Animation(200);
-        dinoRun.AddFrame(Resource.getResourceImage("data/dinoRun1.png"));
-        dinoRun.AddFrame(Resource.getResourceImage("data/dinoRun2.png"));
+        dinoRun.AddFrame(Resource.getResourceImage("ChromeDino/data/dinoRun1.png"));
+        dinoRun.AddFrame(Resource.getResourceImage("ChromeDino/data/dinoRun2.png"));
         rect = new Rectangle();
     }
 

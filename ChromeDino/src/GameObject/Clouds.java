@@ -13,7 +13,7 @@ public class Clouds {
     private List<Cloud> clouds;
 
     public Clouds() {
-        cloudImage = Resource.getResourceImage("data/cloud.png");
+        cloudImage = Resource.getResourceImage("ChromeDino/data/cloud.png");
         clouds = new ArrayList<Cloud>();
 
         Cloud cloud1 = new Cloud();

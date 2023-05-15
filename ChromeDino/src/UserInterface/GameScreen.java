@@ -42,7 +42,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         ground = new Ground(this);
         cloud = new Clouds();
         enemyManager = new EnemyManager(dino);
-        imageGameOverText = Resource.getResourceImage("data/gameOverText.png");
+        imageGameOverText = Resource.getResourceImage("ChromeDino/data/gameOverText.png");
     }
 
     public void startGame() {

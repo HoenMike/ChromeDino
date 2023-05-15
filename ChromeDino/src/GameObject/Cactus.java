@@ -14,7 +14,7 @@ public class Cactus extends Enemy {
 
     public Cactus(Dino dino) {
         this.dino = dino;
-        image = Resource.getResourceImage("data/cactus1.png");
+        image = Resource.getResourceImage("ChromeDino/data/cactus1.png");
         xPosition = 200;
         yPosition = 65;
         rect = new Rectangle();
