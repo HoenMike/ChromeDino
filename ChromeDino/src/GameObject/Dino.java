@@ -39,10 +39,10 @@ public class Dino {
             setSpeedY(speedY += GRAVITY);
             setY(y += speedY);
         }
-        rect.x = (int) x;
+        rect.x = (int) x + 3;
         rect.y = (int) y;
-        rect.width = dinoRun.getFrame().getWidth();
-        rect.height = dinoRun.getFrame().getHeight();
+        rect.width = dinoRun.getFrame().getWidth() - 10;
+        rect.height = dinoRun.getFrame().getHeight() - 10;
     }
 
     public Rectangle getCollisionShape() {
@@ -57,6 +57,8 @@ public class Dino {
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
         g.drawImage(dinoRun.getFrame(), (int) x, (int) y, null);
+        g.drawRect((int) x + 3, (int) y, dinoRun.getFrame().getWidth() - 10, dinoRun.getFrame().getHeight() - 10);
+
     }
 
     public static float getJumpForce() {
@@ -92,6 +94,26 @@ public class Dino {
     }
 
     public boolean getAlive() {
+        return isAlive;
+    }
+
+    public Animation getDinoRun() {
+        return dinoRun;
+    }
+
+    public void setDinoRun(Animation dinoRun) {
+        this.dinoRun = dinoRun;
+    }
+
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    public void setRect(Rectangle rect) {
+        this.rect = rect;
+    }
+
+    public boolean isAlive() {
         return isAlive;
     }
 

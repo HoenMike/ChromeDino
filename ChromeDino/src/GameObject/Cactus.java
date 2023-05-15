@@ -4,17 +4,15 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import Handler.Resource;
-
 public class Cactus extends Enemy {
     public BufferedImage image;
     private int xPosition, yPosition;
     private Rectangle rect;
     private Dino dino;
+    private boolean isScored = false;
 
     public Cactus(Dino dino) {
         this.dino = dino;
-        image = Resource.getResourceImage("ChromeDino/data/cactus1.png");
         xPosition = 200;
         yPosition = 65;
         rect = new Rectangle();
@@ -47,6 +45,15 @@ public class Cactus extends Enemy {
     @Override
     public boolean isOver() {
         return (dino.getX() > xPosition);
+    }
+
+    @Override
+    public boolean isScored() {
+        return isScored;
+    }
+
+    public void setIsScored(boolean isScored) {
+        this.isScored = isScored;
     }
 
     public BufferedImage getImage() {

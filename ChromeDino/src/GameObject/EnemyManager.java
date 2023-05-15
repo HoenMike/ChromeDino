@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import Handler.Resource;
+import UserInterface.GameScreen;
 
 public class EnemyManager {
     private List<Enemy> enemy;
@@ -14,8 +15,10 @@ public class EnemyManager {
 
     private BufferedImage imageCactus1, imageCactus2;
     private Dino dino;
+    private GameScreen gameScreen;
 
-    public EnemyManager(Dino dino) {
+    public EnemyManager(Dino dino, GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
         this.dino = dino;
         enemy = new ArrayList<Enemy>();
         imageCactus1 = Resource.getResourceImage("ChromeDino/data/cactus1.png");
@@ -27,6 +30,10 @@ public class EnemyManager {
     public void update() {
         for (Enemy enemy : enemy) {
             enemy.update();
+            if (enemy.isOver() && !enemy.isScored()) {
+                gameScreen.plusScore(20);
+                enemy.setIsScored(true);
+            }
             if (enemy.getCollisionShape().intersects(dino.getCollisionShape())) {
                 dino.setAlive(false);
             }
@@ -44,14 +51,21 @@ public class EnemyManager {
         }
     }
 
+    public void reset() {
+        enemy.clear();
+        enemy.add(getRandomCactus());
+    }
+
     private Cactus getRandomCactus() {
         Cactus cactus;
         cactus = new Cactus(dino);
+
         cactus.setXPosition(600);
         if (random.nextBoolean()) {
             cactus.setImage(imageCactus1);
         } else {
             cactus.setImage(imageCactus2);
+            cactus.setYPosition(75);
         }
         return cactus;
     }

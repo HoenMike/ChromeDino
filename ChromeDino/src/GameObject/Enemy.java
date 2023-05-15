@@ -13,4 +13,8 @@ public abstract class Enemy {
     public abstract boolean isOutOfScreen();
 
     public abstract boolean isOver();
+
+    public abstract boolean isScored();
+
+    public abstract void setIsScored(boolean value);
 }
