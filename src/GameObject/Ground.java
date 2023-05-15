@@ -19,9 +19,9 @@ public class Ground {
 
     public Ground(GameScreen game) {
         random = new Random();
-        imageGround1 = Resource.getResourceImage("ChromeDino/data/ground1.png");
-        imageGround2 = Resource.getResourceImage("ChromeDino/data/ground2.png");
-        imageGround3 = Resource.getResourceImage("ChromeDino/data/ground3.png");
+        imageGround1 = Resource.getResourceImage("data/ground1.png");
+        imageGround2 = Resource.getResourceImage("data/ground2.png");
+        imageGround3 = Resource.getResourceImage("data/ground3.png");
         listImage = new ArrayList<ImageGround>();
         int numberOfGrounds = 600 / imageGround1.getWidth();
 

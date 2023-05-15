@@ -10,8 +10,8 @@ public class GameOverPanel extends JPanel {
     private BufferedImage replayButton;
 
     public GameOverPanel() {
-        gameOverText = Resource.getResourceImage("ChromeDino/data/gameOverText.png");
-        replayButton = Resource.getResourceImage("ChromeDino/data/replayButton.png");
+        gameOverText = Resource.getResourceImage("data/gameOverText.png");
+        replayButton = Resource.getResourceImage("data/replayButton.png");
     }
 
     @Override
