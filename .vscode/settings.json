@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": [
+        "ChromeDino",
+        "ChromeDino\\src",
+        "ChromeDino\\lib",
+        "ChromeDino\\data",
+        "ChromeDino\\bin"
+    ]
+}

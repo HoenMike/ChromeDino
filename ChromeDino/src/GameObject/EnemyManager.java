@@ -11,9 +11,12 @@ import Handler.Resource;
 public class EnemyManager {
     private List<Enemy> enemy;
     private Random random;
-    private BufferedImage imageCactus1, imageCactus2;
 
-    public EnemyManager() {
+    private BufferedImage imageCactus1, imageCactus2;
+    private Dino dino;
+
+    public EnemyManager(Dino dino) {
+        this.dino = dino;
         enemy = new ArrayList<Enemy>();
         imageCactus1 = Resource.getResourceImage("data/cactus1.png");
         imageCactus2 = Resource.getResourceImage("data/cactus2.png");
@@ -24,6 +27,9 @@ public class EnemyManager {
     public void update() {
         for (Enemy enemy : enemy) {
             enemy.update();
+            if (enemy.getCollisionShape().intersects(dino.getCollisionShape())) {
+                dino.setAlive(false);
+            }
         }
         Enemy firstEnemy = enemy.get(0);
         if (enemy.get(0).isOutOfScreen()) {
@@ -40,7 +46,7 @@ public class EnemyManager {
 
     private Cactus getRandomCactus() {
         Cactus cactus;
-        cactus = new Cactus();
+        cactus = new Cactus(dino);
         cactus.setXPosition(600);
         if (random.nextBoolean()) {
             cactus.setImage(imageCactus1);

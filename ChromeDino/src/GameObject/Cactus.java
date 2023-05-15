@@ -1,17 +1,19 @@
 package GameObject;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import Handler.Resource;
-import java.awt.Rectangle;
 
 public class Cactus extends Enemy {
     public BufferedImage image;
     private int xPosition, yPosition;
     private Rectangle rect;
+    private Dino dino;
 
-    public Cactus() {
+    public Cactus(Dino dino) {
+        this.dino = dino;
         image = Resource.getResourceImage("data/cactus1.png");
         xPosition = 200;
         yPosition = 65;
@@ -28,7 +30,7 @@ public class Cactus extends Enemy {
     }
 
     @Override
-    public Rectangle getCollision() {
+    public Rectangle getCollisionShape() {
         return rect;
     }
 
@@ -40,6 +42,11 @@ public class Cactus extends Enemy {
     @Override
     public void draw(Graphics g) {
         g.drawImage(image, xPosition, yPosition, null);
+    }
+
+    @Override
+    public boolean isOver() {
+        return (dino.getX() > xPosition);
     }
 
     public BufferedImage getImage() {
