@@ -53,8 +53,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         ground = new Ground(this);
         cloud = new Clouds();
         enemyManager = new EnemyManager(dino, this);
-        imageGameOverText = Resource.getResourceImage("ChromeDino/data/gameOverText.png");
-        imageReplayButton = Resource.getResourceImage("ChromeDino/data/replayButton.png");
+        imageGameOverText = Resource.getResourceImage("data/gameOverText.png");
+        imageReplayButton = Resource.getResourceImage("data/replayButton.png");
     }
 
     public void startGame() {
@@ -138,7 +138,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     private void drawReplayButton(Graphics g) {
         int centerX = getWidth() / 2;
         int replayButtonX = centerX - imageReplayButton.getWidth() / 2;
-        int replayButtonY = getHeight() / 2 + imageGameOverText.getHeight() / 2 + 10;
+        int replayButtonY = getHeight() / 2 + imageGameOverText.getHeight() / 2;
         g.drawImage(imageReplayButton, replayButtonX, replayButtonY, null);
     }
 
