@@ -14,7 +14,7 @@ public class Clouds {
 
     public Clouds() {
         cloudImage = Resource.getResourceImage("data/cloud.png");
-        clouds = new ArrayList<Cloud>();
+        clouds = new ArrayList<>();
 
         Cloud cloud1 = new Cloud();
         cloud1.xPosition = 100;

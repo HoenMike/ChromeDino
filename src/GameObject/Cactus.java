@@ -6,7 +6,8 @@ import java.awt.image.BufferedImage;
 
 public class Cactus extends Enemy {
     public BufferedImage image;
-    private int xPosition, yPosition;
+    private int xPosition;
+    private int yPosition;
     private Rectangle rect;
     private Dino dino;
     private boolean isScored = false;

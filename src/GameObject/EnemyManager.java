@@ -20,7 +20,7 @@ public class EnemyManager {
     public EnemyManager(Dino dino, GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         this.dino = dino;
-        enemy = new ArrayList<Enemy>();
+        enemy = new ArrayList<>();
         imageCactus1 = Resource.getResourceImage("data/cactus1.png");
         imageCactus2 = Resource.getResourceImage("data/cactus2.png");
         random = new Random();

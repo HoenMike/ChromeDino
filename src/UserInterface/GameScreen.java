@@ -22,7 +22,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public static final int GAME_OVER_STATE = 2;
 
     // Constants
-    public static final float GRAVITY = 0.3f;
+    public static final float GRAVITY = 0.1f;
     public static final float GROUND = 110;
 
     // Game objects
@@ -37,6 +37,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
     // Game state
     private int gameState = STARTING_STATE;
+    private boolean isKeyPressed;
 
     // Game images
     private BufferedImage imageGameOverText;
@@ -47,10 +48,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
     // Constructor
     public GameScreen() {
-        thread = new Thread(this);
         dino = new Dino();
-        dino.setX(50);
-        ground = new Ground(this);
+        dino.setX(4);
+        ground = new Ground();
         cloud = new Clouds();
         enemyManager = new EnemyManager(dino, this);
         imageGameOverText = Resource.getResourceImage("data/gameOverText.png");
@@ -58,24 +58,45 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     }
 
     public void startGame() {
+        thread = new Thread(this);
         thread.start();
     }
 
     @Override
     public void run() {
-        while (true) {
-            try {
-                update();
-                repaint();
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        int fps = 100;
+		long msPerFrame = 1000 * 1000000 / fps;
+		long lastTime = 0;
+		long elapsed;
+		
+		int msSleep;
+		int nanoSleep;
+
+		long endProcessGame;
+		long lag = 0;
+
+		while (true) {
+			update();
+			repaint();
+			endProcessGame = System.nanoTime();
+			elapsed = (lastTime + msPerFrame - endProcessGame);
+			msSleep = (int) (elapsed / 1000000);
+			nanoSleep = (int) (elapsed % 1000000);
+			if (msSleep <= lag) {
+				lastTime = System.nanoTime();
+				continue;
+			}
+			try {
+				Thread.sleep(msSleep, nanoSleep);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			lastTime = endProcessGame;
+		}
     }
 
     public void update() {
-        switch (gameState) {
+        switch (getGameState()) {
             case PLAYING_STATE:
                 cloud.update();
                 ground.update();
@@ -85,7 +106,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
                     highScore = score;
                 }
                 if (!dino.getAlive()) {
-                    gameState = GAME_OVER_STATE;
+                    setGameState(GAME_OVER_STATE);
                 }
         }
 
@@ -146,7 +167,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public void paint(Graphics g) {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
-        switch (gameState) {
+        switch (getGameState()) {
             case STARTING_STATE:
                 dino.draw(g);
                 break;
@@ -156,30 +177,64 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             case GAME_OVER_STATE:
                 drawGameOverState(g);
                 break;
+            default:
+                break;
         }
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-
+      // TODO document why this method is empty
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (gameState == PLAYING_STATE) {
-            dino.jump();
-        }
+        if (!getIsKeyPressed()) {
+			setIsKeyPressed(true);
+			switch (getGameState()) {
+			case STARTING_STATE:
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					setGameState(PLAYING_STATE);
+				}
+				break;
+			case PLAYING_STATE:
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					dino.jump();
+				} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					dino.down(true);
+				}
+				break;
+			case GAME_OVER_STATE:
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					setGameState(PLAYING_STATE);
+					resetGame();
+				}
+				break;
+            default:
+                break;
+			}
+		}
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        switch (e.getKeyCode()) {
+        setIsKeyPressed(false);
+        switch (e.getKeyCode()){
             case KeyEvent.VK_SPACE:
-                if (gameState == STARTING_STATE) {
+                if (getGameState() == STARTING_STATE) {
                     setGameState(PLAYING_STATE);
-                } else if (gameState == GAME_OVER_STATE) {
+                } else if (getGameState() == GAME_OVER_STATE) {
                     resetGame();
                 }
+                break;
+            case KeyEvent.VK_DOWN:
+                if (getGameState() == PLAYING_STATE) {
+				    dino.down(false);
+                } else if (getGameState() == GAME_OVER_STATE) {
+                    resetGame();
+                }
+                break;
+            default:
                 break;
         }
     }
@@ -193,10 +248,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         enemyManager.reset();
     }
 
-    private void setGameState(int gameState) {
-        this.gameState = gameState;
-    }
-
     // getter & setter
     public static float getGravity() {
         return GRAVITY;
@@ -206,4 +257,19 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         return GROUND;
     }
 
+    public boolean getIsKeyPressed() {
+        return isKeyPressed;
+    }
+
+    public void setIsKeyPressed(boolean isKeyPressed) {
+        this.isKeyPressed = isKeyPressed;
+    }
+
+    public int getGameState() {
+        return gameState;
+    }
+
+    private void setGameState(int gameState) {
+        this.gameState = gameState;
+    }
 }

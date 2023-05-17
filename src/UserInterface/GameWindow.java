@@ -11,7 +11,7 @@ public class GameWindow extends JFrame {
 
     public GameWindow() {
         super("Chrome Dino");
-        setSize(600, 175);
+        setSize(600, 300);
         // Set the position of the window to the center of the screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int centerX = (int) screenSize.getWidth() / 2;
