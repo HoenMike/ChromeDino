@@ -1,25 +1,20 @@
 package GameObject;
 
-import static UserInterface.GameScreen.GRAVITY;
-import static UserInterface.GameScreen.GROUND;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.Clip;
 
 import Handler.Animation;
 import Handler.Resource;
 
 public class Dino {
     private static final int NORMAL_RUN = 0;
-	private static final int JUMPING = 1;
-	private static final int DOWN_RUN = 2;
-	private static final int DEATH = 3;
+    private static final int JUMPING = 1;
+    private static final int DOWN_RUN = 2;
+    private static final int DEATH = 3;
     public static final float JUMP_FORCE = -4;
 
     private float x = 50;
@@ -29,9 +24,9 @@ public class Dino {
 
     private Animation dinoRun;
     private BufferedImage dinoJump;
-	private Animation dinoDown;
-	private BufferedImage dinoDeath;
-    
+    private Animation dinoDown;
+    private BufferedImage dinoDeath;
+
     private Rectangle rect;
     private boolean isAlive = true;
 
@@ -51,24 +46,24 @@ public class Dino {
         dinoJump = Resource.getResourceImage("data/dinoIdle.png");
 
         dinoDown = new Animation(90);
-		dinoDown.addFrame(Resource.getResourceImage("data/dino5.png"));
-		dinoDown.addFrame(Resource.getResourceImage("data/dino6.png"));
+        dinoDown.addFrame(Resource.getResourceImage("data/dino5.png"));
+        dinoDown.addFrame(Resource.getResourceImage("data/dino6.png"));
 
-		dinoDeath = Resource.getResourceImage("data/dinoDeath.png");
+        dinoDeath = Resource.getResourceImage("data/dinoDeath.png");
     }
 
     public void update() {
         dinoRun.update();
         dinoDown.update();
         // for jumping
-        if (y >= GROUND - dinoRun.getFrame().getHeight()) {
+        if (y >= UserInterface.GameScreen.getGround() - dinoRun.getFrame().getHeight()) {
             setSpeedY(0);
-            setY(GROUND - dinoRun.getFrame().getHeight());
-            if(state != DOWN_RUN) {
-				state = NORMAL_RUN;
-			}
+            setY(UserInterface.GameScreen.getGround() - dinoRun.getFrame().getHeight());
+            if (state != DOWN_RUN) {
+                state = NORMAL_RUN;
+            }
         } else {
-            setSpeedY(speedY += GRAVITY);
+            setSpeedY(speedY += UserInterface.GameScreen.getGravity());
             setY(y += speedY);
         }
         rect.x = (int) x + 3;
@@ -89,35 +84,35 @@ public class Dino {
     }
 
     public void down(boolean isDown) {
-		if(state == JUMPING) {
-			return;
-		}
-		if(isDown) {
-			state = DOWN_RUN;
-		} else {
-			state = NORMAL_RUN;
-		}
-	}
+        if (state == JUMPING) {
+            return;
+        }
+        if (isDown) {
+            state = DOWN_RUN;
+        } else {
+            state = NORMAL_RUN;
+        }
+    }
 
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
 
-        switch(state) {
-			case NORMAL_RUN:
+        switch (state) {
+            case NORMAL_RUN:
                 g.drawImage(dinoRun.getFrame(), (int) x, (int) y, null);
-				break;
-			case JUMPING:
+                break;
+            case JUMPING:
                 g.drawImage(dinoJump, (int) x, (int) y, null);
-				break;
-			case DOWN_RUN:
+                break;
+            case DOWN_RUN:
                 g.drawImage(dinoDown.getFrame(), (int) x, (int) (y + 20), null);
-				break;
-			case DEATH:
+                break;
+            case DEATH:
                 g.drawImage(dinoDeath, (int) x, (int) y, null);
-				break;
+                break;
             default:
                 break;
-		}
+        }
 
         g.drawRect((int) x + 3, (int) y, dinoRun.getFrame().getWidth() - 10, dinoRun.getFrame().getHeight() - 10);
 
