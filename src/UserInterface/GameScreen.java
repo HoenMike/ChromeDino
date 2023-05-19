@@ -36,7 +36,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	public GameScreen() {
 		dino = new Dino();
 		land = new Ground(GameWindow.SCREEN_WIDTH, dino);
-		dino.setSpeedX(4);
+		dino.setDinoSpeedX(4);
 		replayButtonImage = Resource.getResourceImage("data/replayButton.png");
 		gameOverButtonImage = Resource.getResourceImage("data/gameOverText.png");
 		enemiesManager = new EnemiesManager(dino);
