@@ -83,9 +83,10 @@ public class Dino {
 				g.drawImage(dead, (int) getDinoXPosition(), (int) getDinoYPosition(), null);
 				break;
 		}
-		Rectangle bound = getDinoCollisionShape();
-		g.setColor(Color.RED);
-		g.drawRect(bound.x, bound.y, bound.width, bound.height);
+		// Rectangle collisionShape = getDinoCollisionShape();
+		// g.setColor(Color.RED);
+		// g.drawRect(collisionShape.x, collisionShape.y, collisionShape.width,
+		// collisionShape.height);
 	}
 
 	public void update() {
@@ -161,7 +162,7 @@ public class Dino {
 	}
 
 	public void upScore() {
-		setScore(getScore() + 20);
+		setScore(getScore() + 1);
 
 		if (getScore() % 100 == 0) {
 			scoreUpSound.play();
