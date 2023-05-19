@@ -5,55 +5,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Animation {
-    private List<BufferedImage> frames;
-    private int frameIndex = 0;
-    private long deltaTime;
-    private long previousTime = 0;
 
-    // constructor
-    public Animation(long deltaTime) {
-        this.deltaTime = deltaTime;
-        frames = new ArrayList<>();
-    }
+	private int currentFrame = 0;
 
-    public void update() {
+	private long deltaTime;
+	private long previousTime;
 
-        int frameIndex1 = getFrameIndex();
-        // update frames every deltaTime (in milliseconds)
-        if (System.currentTimeMillis() - getPreviousTime() >= getDeltaTime()) {
-            frameIndex1++;
-            if (frameIndex1 >= frames.size()) {
-                setFrameIndex(0);
-            }
-            setPreviousTime(System.currentTimeMillis());
-        }
-    }
+	private List<BufferedImage> list;
 
-    public void addFrame(BufferedImage frame) {
-        frames.add(frame);
-    }
+	public Animation(int deltaTime) {
+		this.deltaTime = deltaTime;
+		previousTime = 0;
+		list = new ArrayList<BufferedImage>();
+	}
 
-    public BufferedImage getFrame() {
-        return frames.get(getFrameIndex());
-    }
+	public void updateFrame() {
+		if (System.currentTimeMillis() - previousTime >= deltaTime) {
+			currentFrame++;
+			if (currentFrame >= list.size()) {
+				currentFrame = 0;
+			}
+			previousTime = System.currentTimeMillis();
+		}
+	}
 
-    public int getFrameIndex() {
-        return frameIndex;
-    }
+	public void addFrame(BufferedImage image) {
+		list.add(image);
+	}
 
-    public void setFrameIndex(int frameIndex) {
-        this.frameIndex = frameIndex;
-    }
+	public BufferedImage getFrame() {
+		return list.get(currentFrame);
+	}
 
-    public long getDeltaTime() {
-        return deltaTime;
-    }
-
-    public long getPreviousTime() {
-        return previousTime;
-    }
-
-    public void setPreviousTime(long previousTime) {
-        this.previousTime = previousTime;
-    }
 }

@@ -3,6 +3,7 @@ package GameObject;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -10,64 +11,80 @@ import Handler.Resource;
 
 public class Ground {
 
-    private List<ImageGround> groundImages;
-    private BufferedImage imageGround1;
-    private BufferedImage imageGround2;
-    private BufferedImage imageGround3;
-    private Random random;
+	public static final int GROUND_Y_POS = 103;
 
-    public Ground() {
-        random = new Random();
-        groundImages = new ArrayList<>();
-        imageGround1 = Resource.getResourceImage("data/ground1.png");
-        imageGround2 = Resource.getResourceImage("data/ground2.png");
-        imageGround3 = Resource.getResourceImage("data/ground3.png");
+	private List<ImageGround> listGround;
+	private BufferedImage ground1;
+	private BufferedImage ground2;
+	private BufferedImage ground3;
 
-        int numberOfGrounds = 600 / imageGround1.getWidth();
+	private Dino dino;
 
-        for (int i = 0; i <= numberOfGrounds + 1; i++) {
-            ImageGround imageGround = new ImageGround();
-            imageGround.xPosition = i * imageGround1.getWidth();
-            imageGround.image = getRandomGround();
-            groundImages.add(imageGround);
-        }
-    }
+	public Ground(int width, Dino dino) {
+		this.dino = dino;
+		ground1 = Resource.getResourceImage("data/ground1.png");
+		ground2 = Resource.getResourceImage("data/ground2.png");
+		ground3 = Resource.getResourceImage("data/ground3.png");
+		int numberOfImageGround = width / ground1.getWidth() + 2;
+		listGround = new ArrayList<ImageGround>();
+		for (int i = 0; i < numberOfImageGround; i++) {
+			ImageGround imageGround = new ImageGround();
+			imageGround.xPosition = i * ground1.getWidth();
+			setImageGround(imageGround);
+			listGround.add(imageGround);
+		}
+	}
 
-    public void update() {
-        for (ImageGround imageGround : groundImages) {
-            imageGround.xPosition -= 2;
-        }
-        // Delete the Ground image that passed the left side of the screen and add it to
-        // the Right side of the screen
-        ImageGround firstElement = groundImages.get(0);
-        if (firstElement.xPosition + imageGround1.getWidth() < 0) {
-            firstElement.xPosition = groundImages.get(groundImages.size() - 1).xPosition + imageGround1.getWidth();
-            groundImages.add(groundImages.get(0));
-            groundImages.remove(0);
-        }
-    }
+	public void update() {
+		Iterator<ImageGround> itr = listGround.iterator();
+		ImageGround firstGround = itr.next();
+		firstGround.xPosition -= dino.getDinoSpeedX();
+		float previousPosX = firstGround.xPosition;
+		while (itr.hasNext()) {
+			ImageGround element = itr.next();
+			element.xPosition = previousPosX + ground1.getWidth();
+			previousPosX = element.xPosition;
+		}
+		if (firstGround.xPosition < -ground1.getWidth()) {
+			listGround.remove(firstGround);
+			firstGround.xPosition = previousPosX + ground1.getWidth();
+			setImageGround(firstGround);
+			listGround.add(firstGround);
+		}
+	}
 
-    public void draw(Graphics g) {
-        for (ImageGround imageGround : groundImages) {
-            g.drawImage(imageGround.image, imageGround.xPosition, (int) UserInterface.GameScreen.getGround() - 20,
-                    null);
-        }
-    }
+	private void setImageGround(ImageGround imgGround) {
+		int typeGround = getTypeOfGround();
+		if (typeGround == 1) {
+			imgGround.image = ground1;
+		} else if (typeGround == 3) {
+			imgGround.image = ground3;
+		} else {
+			imgGround.image = ground2;
+		}
+	}
 
-    private BufferedImage getRandomGround() {
-        int i = random.nextInt(10);
-        switch (i) {
-            case 0:
-                return imageGround1;
-            case 1:
-                return imageGround2;
-            default:
-                return imageGround3;
-        }
-    }
+	public void draw(Graphics g) {
+		for (ImageGround imgGround : listGround) {
+			g.drawImage(imgGround.image, (int) imgGround.xPosition, GROUND_Y_POS, null);
+		}
+	}
 
-    private class ImageGround {
-        int xPosition;
-        BufferedImage image;
-    }
+	private int getTypeOfGround() {
+		Random rand = new Random();
+		int type = rand.nextInt(10);
+		if (type == 1) {
+			return 1;
+		} else if (type == 9) {
+			return 3;
+		} else {
+			return 2;
+		}
+	}
+
+	private class ImageGround {
+		float xPosition;
+		BufferedImage image;
+	}
+
 }

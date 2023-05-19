@@ -1,177 +1,185 @@
 package GameObject;
 
-import java.awt.Color;
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
-import javax.sound.sampled.Clip;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import Handler.Animation;
 import Handler.Resource;
 
 public class Dino {
-    private static final int NORMAL_RUN = 0;
-    private static final int JUMPING = 1;
-    private static final int DOWN_RUN = 2;
-    private static final int DEATH = 3;
-    public static final float JUMP_FORCE = -4;
 
-    private float x = 50;
-    private float y = 67;
-    private float speedY = 0;
-    private int state = NORMAL_RUN;
+	public static final int LAND_Y_POSITION = 80;
+	public static final float GRAVITY = 0.4f;
 
-    private Animation dinoRun;
-    private BufferedImage dinoJump;
-    private Animation dinoDown;
-    private BufferedImage dinoDeath;
+	private static final int NORMAL_RUN = 0;
+	private static final int JUMPING = 1;
+	private static final int CROUCH_RUN = 2;
+	private static final int DEATH = 3;
 
-    private Rectangle rect;
-    private boolean isAlive = true;
+	private float dinoYPosition;
+	private float dinoXPosition;
+	private float dinoSpeedX;
+	private float dinoSpeedY;
+	private Rectangle dinoCollisionShape;
 
-    private Clip jumpSound;
-    private Clip deathSound;
-    private Clip scoreUpSound;
+	private int score = 0;
+	private int highScore = 0;
 
-    // constrictor
-    public Dino() {
+	private int state = NORMAL_RUN;
 
-        rect = new Rectangle();
+	private Animation normalRunAnimation;
+	private Animation crouchRunAnimation;
+	private BufferedImage jumping;
+	private BufferedImage dead;
 
-        dinoRun = new Animation(90);
-        dinoRun.addFrame(Resource.getResourceImage("data/dinoRun1.png"));
-        dinoRun.addFrame(Resource.getResourceImage("data/dinoRun2.png"));
+	private AudioClip jumpSound;
+	private AudioClip deadSound;
+	private AudioClip scoreUpSound;
 
-        dinoJump = Resource.getResourceImage("data/dinoIdle.png");
+	public Dino() {
+		dinoXPosition = 50;
+		dinoYPosition = LAND_Y_POSITION;
+		dinoCollisionShape = new Rectangle();
+		// run animation
+		normalRunAnimation = new Animation(90);
+		normalRunAnimation.addFrame(Resource.getResourceImage("data/dinoRun1.png"));
+		normalRunAnimation.addFrame(Resource.getResourceImage("data/DinoRun2.png"));
+		// crouch animation
+		crouchRunAnimation = new Animation(90);
+		crouchRunAnimation.addFrame(Resource.getResourceImage("data/dinoCrouch1.png"));
+		crouchRunAnimation.addFrame(Resource.getResourceImage("data/dinoCrouch2.png"));
+		// jump animation
+		jumping = Resource.getResourceImage("data/dinoJump.png");
+		dead = Resource.getResourceImage("data/dinoDeath.png");
+		// sound effects
+		try {
+			jumpSound = Applet.newAudioClip(new URL("file", "", "data/jump.wav"));
+			deadSound = Applet.newAudioClip(new URL("file", "", "data/dead.wav"));
+			scoreUpSound = Applet.newAudioClip(new URL("file", "", "data/scoreUp.wav"));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
 
-        dinoDown = new Animation(90);
-        dinoDown.addFrame(Resource.getResourceImage("data/dino5.png"));
-        dinoDown.addFrame(Resource.getResourceImage("data/dino6.png"));
+	public void draw(Graphics g) {
+		switch (state) {
+			case NORMAL_RUN:
+				g.drawImage(normalRunAnimation.getFrame(), (int) dinoXPosition, (int) dinoYPosition, null);
+				break;
+			case JUMPING:
+				g.drawImage(jumping, (int) dinoXPosition, (int) dinoYPosition, null);
+				break;
+			case CROUCH_RUN:
+				g.drawImage(crouchRunAnimation.getFrame(), (int) dinoXPosition, (int) (dinoYPosition + 20), null);
+				break;
+			case DEATH:
+				g.drawImage(dead, (int) dinoXPosition, (int) dinoYPosition, null);
+				break;
+		}
+		Rectangle bound = getDinoCollisionShape();
+		g.setColor(Color.RED);
+		g.drawRect(bound.x, bound.y, bound.width, bound.height);
+	}
 
-        dinoDeath = Resource.getResourceImage("data/dinoDeath.png");
-    }
+	public void update() {
+		normalRunAnimation.updateFrame();
+		crouchRunAnimation.updateFrame();
+		if (dinoYPosition >= LAND_Y_POSITION) {
+			dinoYPosition = LAND_Y_POSITION;
+			if (state != CROUCH_RUN) {
+				state = NORMAL_RUN;
+			}
+		} else {
+			dinoSpeedY += GRAVITY;
+			dinoYPosition += dinoSpeedY;
+		}
+	}
 
-    public void update() {
-        dinoRun.update();
-        dinoDown.update();
-        // for jumping
-        if (y >= UserInterface.GameScreen.getGround() - dinoRun.getFrame().getHeight()) {
-            setSpeedY(0);
-            setY(UserInterface.GameScreen.getGround() - dinoRun.getFrame().getHeight());
-            if (state != DOWN_RUN) {
-                state = NORMAL_RUN;
-            }
-        } else {
-            setSpeedY(speedY += UserInterface.GameScreen.getGravity());
-            setY(y += speedY);
-        }
-        rect.x = (int) x + 3;
-        rect.y = (int) y;
-        rect.width = dinoRun.getFrame().getWidth() - 10;
-        rect.height = dinoRun.getFrame().getHeight() - 10;
-    }
+	public void jump() {
+		if (dinoYPosition >= LAND_Y_POSITION) {
+			if (jumpSound != null) {
+				jumpSound.play();
+			}
+			dinoSpeedY = -7.5f;
+			dinoYPosition += dinoSpeedY;
+			state = JUMPING;
+		}
+	}
 
-    public Rectangle getCollisionShape() {
-        return rect;
-    }
+	public void crouch(boolean isCrouch) {
+		if (state == JUMPING) {
+			return;
+		}
+		if (isCrouch) {
+			state = CROUCH_RUN;
+		} else {
+			state = NORMAL_RUN;
+		}
+	}
 
-    public void jump() {
-        if (y <= 67 && y >= 60) {
-            setSpeedY(JUMP_FORCE);
-            y += getSpeedY();
-        }
-    }
+	public Rectangle getDinoCollisionShape() {
+		dinoCollisionShape = new Rectangle();
+		if (state == CROUCH_RUN) {
+			dinoCollisionShape.x = (int) dinoXPosition + 5;
+			dinoCollisionShape.y = (int) dinoYPosition + 20;
+			dinoCollisionShape.width = crouchRunAnimation.getFrame().getWidth() - 10;
+			dinoCollisionShape.height = crouchRunAnimation.getFrame().getHeight();
+		} else {
+			dinoCollisionShape.x = (int) dinoXPosition + 5;
+			dinoCollisionShape.y = (int) dinoYPosition;
+			dinoCollisionShape.width = normalRunAnimation.getFrame().getWidth() - 10;
+			dinoCollisionShape.height = normalRunAnimation.getFrame().getHeight();
+		}
+		return dinoCollisionShape;
+	}
 
-    public void down(boolean isDown) {
-        if (state == JUMPING) {
-            return;
-        }
-        if (isDown) {
-            state = DOWN_RUN;
-        } else {
-            state = NORMAL_RUN;
-        }
-    }
+	public void dead(boolean isDeath) {
+		if (isDeath) {
+			state = DEATH;
+			score = 0;
+		} else {
+			state = NORMAL_RUN;
+		}
+	}
 
-    public void draw(Graphics g) {
-        g.setColor(Color.BLACK);
+	public void playDeadSound() {
+		deadSound.play();
+	}
 
-        switch (state) {
-            case NORMAL_RUN:
-                g.drawImage(dinoRun.getFrame(), (int) x, (int) y, null);
-                break;
-            case JUMPING:
-                g.drawImage(dinoJump, (int) x, (int) y, null);
-                break;
-            case DOWN_RUN:
-                g.drawImage(dinoDown.getFrame(), (int) x, (int) (y + 20), null);
-                break;
-            case DEATH:
-                g.drawImage(dinoDeath, (int) x, (int) y, null);
-                break;
-            default:
-                break;
-        }
+	public void reset() {
+		dinoYPosition = LAND_Y_POSITION;
+	}
 
-        g.drawRect((int) x + 3, (int) y, dinoRun.getFrame().getWidth() - 10, dinoRun.getFrame().getHeight() - 10);
+	public void upScore() {
+		score += 20;
+		if (score >= highScore) {
+			highScore = score;
+		}
+		if (score % 100 == 0) {
+			scoreUpSound.play();
+		}
+	}
 
-    }
+	public int getScore() {
+		return score;
+	}
 
-    public static float getJumpForce() {
-        return JUMP_FORCE;
-    }
+	public int getHighScore() {
+		return highScore;
+	}
 
-    public float getX() {
-        return x;
-    }
+	public float getDinoSpeedX() {
+		return dinoSpeedX;
+	}
 
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public float getSpeedY() {
-        return speedY;
-    }
-
-    public void setSpeedY(float speedY) {
-        this.speedY = speedY;
-    }
-
-    public void setAlive(boolean state) {
-        isAlive = state;
-    }
-
-    public boolean getAlive() {
-        return isAlive;
-    }
-
-    public Animation getDinoRun() {
-        return dinoRun;
-    }
-
-    public void setDinoRun(Animation dinoRun) {
-        this.dinoRun = dinoRun;
-    }
-
-    public Rectangle getRect() {
-        return rect;
-    }
-
-    public void setRect(Rectangle rect) {
-        this.rect = rect;
-    }
-
-    public boolean isAlive() {
-        return isAlive;
-    }
+	public void setSpeedX(int speedX) {
+		this.dinoSpeedX = speedX;
+	}
 
 }

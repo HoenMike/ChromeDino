@@ -5,88 +5,50 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Cactus extends Enemy {
-    public BufferedImage image;
-    private int xPosition;
-    private int yPosition;
-    private Rectangle rect;
-    private Dino dino;
-    private boolean isScored = false;
 
-    public Cactus(Dino dino) {
-        this.dino = dino;
-        xPosition = 200;
-        yPosition = 65;
-        rect = new Rectangle();
-    }
+	public static final int GROUND_POSITION = 125;
 
-    @Override
-    public void update() {
-        xPosition -= 2;
-        rect.x = xPosition;
-        rect.y = yPosition;
-        rect.width = image.getWidth();
-        rect.height = image.getHeight();
-    }
+	private int cactusXPosition;
+	private int cactusWidth;
+	private int cactusHeight;
 
-    @Override
-    public Rectangle getCollisionShape() {
-        return rect;
-    }
+	private BufferedImage image;
+	private Dino dino;
 
-    @Override
-    public boolean isOutOfScreen() {
-        return (xPosition + image.getWidth() < 0);
-    }
+	private Rectangle cactusCollisionShape;
 
-    @Override
-    public void draw(Graphics g) {
-        g.drawImage(image, xPosition, yPosition, null);
-    }
+	public Cactus(Dino dino, int cactusXPosition, int cactusWidth, int cactusHeight, BufferedImage image) {
+		this.dino = dino;
+		this.cactusXPosition = cactusXPosition;
+		this.cactusWidth = cactusWidth;
+		this.cactusHeight = cactusHeight;
+		this.image = image;
+		cactusCollisionShape = new Rectangle();
+	}
 
-    @Override
-    public boolean isOver() {
-        return (dino.getX() > xPosition);
-    }
+	public void update() {
+		cactusXPosition -= dino.getDinoSpeedX();
+	}
 
-    @Override
-    public boolean isScored() {
-        return isScored;
-    }
+	public void draw(Graphics g) {
+		g.drawImage(image, cactusXPosition, GROUND_POSITION - image.getHeight(), null);
+	}
 
-    public void setIsScored(boolean isScored) {
-        this.isScored = isScored;
-    }
+	public Rectangle getCollision() {
+		cactusCollisionShape = new Rectangle();
+		cactusCollisionShape.x = (int) cactusXPosition + (image.getWidth() - cactusWidth) / 2;
+		cactusCollisionShape.y = GROUND_POSITION - image.getHeight() + (image.getHeight() - cactusHeight) / 2;
+		cactusCollisionShape.width = cactusWidth;
+		cactusCollisionShape.height = cactusHeight;
+		return cactusCollisionShape;
+	}
 
-    public BufferedImage getImage() {
-        return image;
-    }
-
-    public void setImage(BufferedImage image) {
-        this.image = image;
-    }
-
-    public int getXPosition() {
-        return xPosition;
-    }
-
-    public void setXPosition(int xPosition) {
-        this.xPosition = xPosition;
-    }
-
-    public int getYPosition() {
-        return yPosition;
-    }
-
-    public void setYPosition(int yPosition) {
-        this.yPosition = yPosition;
-    }
-
-    public Rectangle getRect() {
-        return rect;
-    }
-
-    public void setRect(Rectangle rect) {
-        this.rect = rect;
-    }
+	@Override
+	public boolean isOutOfScreen() {
+		if (cactusXPosition < -image.getWidth()) {
+			return true;
+		}
+		return false;
+	}
 
 }

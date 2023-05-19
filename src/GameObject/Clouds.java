@@ -3,45 +3,72 @@ package GameObject;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import Handler.Resource;
+import UserInterface.GameWindow;
 
 public class Clouds {
-    private BufferedImage cloudImage;
+	private List<ImageCloud> listCloud;
+	private BufferedImage cloud;
 
-    private List<Cloud> clouds;
+	private Dino dino;
 
-    public Clouds() {
-        cloudImage = Resource.getResourceImage("data/cloud.png");
-        clouds = new ArrayList<>();
+	public Clouds(int width, Dino dino) {
+		this.dino = dino;
+		cloud = Resource.getResourceImage("data/cloud.png");
+		listCloud = new ArrayList<ImageCloud>();
 
-        Cloud cloud1 = new Cloud();
-        cloud1.xPosition = 100;
-        cloud1.yPosition = 50;
-        clouds.add(cloud1);
+		ImageCloud imageCloud = new ImageCloud();
+		imageCloud.posX = 0;
+		imageCloud.posY = 30;
+		listCloud.add(imageCloud);
 
-    }
+		imageCloud = new ImageCloud();
+		imageCloud.posX = 150;
+		imageCloud.posY = 40;
+		listCloud.add(imageCloud);
 
-    public void update() {
-        for (Cloud cloud : clouds) {
-            cloud.xPosition--;
-        }
-        Cloud firstCloud = clouds.get(0);
-        if (firstCloud.xPosition + cloudImage.getWidth() < 0) {
-            firstCloud.xPosition = 600;
-            clouds.remove(firstCloud);
-            clouds.add(firstCloud);
-        }
-    }
+		imageCloud = new ImageCloud();
+		imageCloud.posX = 300;
+		imageCloud.posY = 50;
+		listCloud.add(imageCloud);
 
-    public void draw(Graphics g) {
-        for (Cloud cloud : clouds) {
-            g.drawImage(cloudImage, (int) cloud.xPosition, (int) cloud.yPosition, null);
-        }
-    }
+		imageCloud = new ImageCloud();
+		imageCloud.posX = 450;
+		imageCloud.posY = 20;
+		listCloud.add(imageCloud);
 
-    private class Cloud {
-        float xPosition, yPosition;
-    }
+		imageCloud = new ImageCloud();
+		imageCloud.posX = 600;
+		imageCloud.posY = 60;
+		listCloud.add(imageCloud);
+	}
+
+	public void update() {
+		Iterator<ImageCloud> itr = listCloud.iterator();
+		ImageCloud firstElement = itr.next();
+		firstElement.posX -= dino.getDinoSpeedX() / 8;
+		while (itr.hasNext()) {
+			ImageCloud element = itr.next();
+			element.posX -= dino.getDinoSpeedX() / 8;
+		}
+		if (firstElement.posX < -cloud.getWidth()) {
+			listCloud.remove(firstElement);
+			firstElement.posX = GameWindow.SCREEN_WIDTH;
+			listCloud.add(firstElement);
+		}
+	}
+
+	public void draw(Graphics g) {
+		for (ImageCloud imgLand : listCloud) {
+			g.drawImage(cloud, (int) imgLand.posX, imgLand.posY, null);
+		}
+	}
+
+	private class ImageCloud {
+		float posX;
+		int posY;
+	}
 }
