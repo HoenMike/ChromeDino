@@ -11,7 +11,7 @@ import Handler.Resource;
 
 public class Ground {
 
-	public static final int GROUND_Y_POS = 103;
+	private static final int GROUND_Y_POS = 103;
 
 	private List<ImageGround> listGround;
 	private BufferedImage ground1;
