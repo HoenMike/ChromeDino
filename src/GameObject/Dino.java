@@ -143,6 +143,9 @@ public class Dino {
 	public void dead(boolean isDeath) {
 		if (isDeath) {
 			setState(DEATH);
+			if (getScore() >= getHighScore()) {
+				setHighScore(getScore());
+			}
 			setScore(0);
 		} else {
 			setState(NORMAL_RUN);
@@ -159,9 +162,7 @@ public class Dino {
 
 	public void upScore() {
 		setScore(getScore() + 20);
-		if (getScore() >= getHighScore()) {
-			setHighScore(getScore());
-		}
+
 		if (getScore() % 100 == 0) {
 			scoreUpSound.play();
 		}

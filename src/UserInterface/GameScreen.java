@@ -36,7 +36,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	public GameScreen() {
 		dino = new Dino();
 		land = new Ground(GameWindow.SCREEN_WIDTH, dino);
-		dino.setDinoSpeedX(4);
+		dino.setDinoSpeedX(6);
 		replayButtonImage = Resource.getResourceImage("data/replayButton.png");
 		gameOverButtonImage = Resource.getResourceImage("data/gameOverText.png");
 		enemiesManager = new EnemiesManager(dino);
@@ -77,8 +77,13 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				enemiesManager.draw(g);
 				dino.draw(g);
 				g.setColor(Color.BLACK);
-				g.drawString("Score " + dino.getScore(), 500, 40);
-				g.drawString("High score " + dino.getHighScore(), 500, 20);
+				if (dino.getHighScore() > 0) {
+					g.drawString("HI: " + String.format("%05d", dino.getHighScore()), getWidth() - 60, 20);
+					g.drawString(String.format("%05d", dino.getScore()), getWidth() - 42, 40);
+				} else {
+					g.drawString(String.format("%05d", dino.getScore()), getWidth() - 42, 20);
+				}
+
 				if (gameState == GAME_OVER_STATE) {
 					g.drawImage(gameOverButtonImage, 200, 30, null);
 					g.drawImage(replayButtonImage, 283, 50, null);

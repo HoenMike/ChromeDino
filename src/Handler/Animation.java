@@ -20,13 +20,37 @@ public class Animation {
 	}
 
 	public void updateFrame() {
-		if (System.currentTimeMillis() - previousTime >= deltaTime) {
-			currentFrame++;
-			if (currentFrame >= list.size()) {
-				currentFrame = 0;
+		if (System.currentTimeMillis() - getPreviousTime() >= getDeltaTime()) {
+			addCurrentFrame(1);
+			if (getCurrentFrame() >= list.size()) {
+				setCurrentFrame(0);
 			}
-			previousTime = System.currentTimeMillis();
+			setPreviousTime(System.currentTimeMillis());
 		}
+	}
+
+	private void setPreviousTime(long previousTime) {
+		this.previousTime = previousTime;
+	}
+
+	private void setCurrentFrame(int currentFrame) {
+		this.currentFrame = currentFrame;
+	}
+
+	private int getCurrentFrame() {
+		return currentFrame;
+	}
+
+	private void addCurrentFrame(int index) {
+		currentFrame += index;
+	}
+
+	private long getDeltaTime() {
+		return deltaTime;
+	}
+
+	private long getPreviousTime() {
+		return previousTime;
 	}
 
 	public void addFrame(BufferedImage image) {
