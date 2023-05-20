@@ -33,6 +33,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private BufferedImage replayButtonImage;
 	private BufferedImage gameOverButtonImage;
 
+	private long lastScoreUpdateTime;
+	private final long SCORE_UPDATE_INTERVAL = 200; // 0.2 second
+
 	public GameScreen() {
 		dino = new Dino();
 		land = new Ground(GameWindow.SCREEN_WIDTH, dino);
@@ -58,6 +61,12 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				dino.playDeadSound();
 				gameState = GAME_OVER_STATE;
 				dino.dead(true);
+			}
+
+			long currentTime = System.currentTimeMillis();
+			if (currentTime - lastScoreUpdateTime >= SCORE_UPDATE_INTERVAL) {
+				dino.upScore(1);
+				lastScoreUpdateTime = currentTime;
 			}
 		}
 	}
@@ -170,5 +179,4 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		dino.dead(false);
 		dino.reset();
 	}
-
 }

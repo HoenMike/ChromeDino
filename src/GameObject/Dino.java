@@ -159,19 +159,21 @@ public class Dino {
 	public void reset() {
 		setDinoYPosition(LAND_Y_POSITION);
 	}
+	
+	public
 
-	public void upScore() {
-		setScore(getScore() + 20);
-
+	 void upScore(int score) {
+		setScore(getScore() + score);
 		if (getScore() % 100 == 0) {
 			scoreUpSound.play();
 		}
 	}
 
-	public int getScore() {
-		return score;
-	}
+	pu
 
+	
+
+	
 	public void setScore(int score) {
 		this.score = score;
 	}
