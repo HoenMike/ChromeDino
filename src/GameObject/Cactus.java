@@ -19,44 +19,51 @@ public class Cactus extends Enemy {
 
 	public Cactus(Dino dino, int cactusXPosition, int cactusWidth, int cactusHeight, BufferedImage image) {
 		this.dino = dino;
-		this.cactusXPosition = cactusXPosition;
-		this.cactusWidth = cactusWidth;
-		this.cactusHeight = cactusHeight;
-		this.image = image;
+		setCactusXPosition(cactusXPosition);
+		setCactusWidth(cactusWidth);
+		setCactusHeight(cactusHeight);
+		setImage(image);
 		cactusCollisionShape = new Rectangle();
 	}
 
+	// Updates the cactus position based on dino's speed
 	public void update() {
-		setCactusXPosition(getCactusXPosition() - dino.getDinoSpeedX());
+		setCactusXPosition(getCactusXPosition() - (int) dino.getDinoSpeedX());
 	}
 
+	// Draws the cactus on the screen
 	public void draw(Graphics g) {
-		g.drawImage(image, getCactusXPosition(), GROUND_POSITION - image.getHeight(), null);
+		g.drawImage(getImage(), getCactusXPosition(), GROUND_POSITION - getImage().getHeight(), null);
 	}
 
+	// Returns the collision shape of the cactus
 	public Rectangle getCollision() {
 		cactusCollisionShape = new Rectangle();
-		cactusCollisionShape.x = (int) getCactusXPosition() + (image.getWidth() - getCactusWidth()) / 2;
-		cactusCollisionShape.y = GROUND_POSITION - image.getHeight() + (image.getHeight() - getCactusHeight()) / 2;
+		cactusCollisionShape.x = (int) getCactusXPosition() + (getImage().getWidth() - getCactusWidth()) / 2;
+		cactusCollisionShape.y = GROUND_POSITION - getImage().getHeight()
+				+ (getImage().getHeight() - getCactusHeight()) / 2;
 		cactusCollisionShape.width = getCactusWidth();
 		cactusCollisionShape.height = getCactusHeight();
 		return cactusCollisionShape;
 	}
 
+	// Checks if the cactus is out of the screen
 	@Override
 	public boolean isOutOfScreen() {
-		if (getCactusXPosition() < -image.getWidth()) {
+		if (getCactusXPosition() < -getImage().getWidth()) {
 			return true;
 		}
 		return false;
 	}
 
+	// Getters and setters
+
 	public int getCactusXPosition() {
 		return cactusXPosition;
 	}
 
-	public void setCactusXPosition(float cactusXPosition) {
-		this.cactusXPosition = (int) cactusXPosition;
+	public void setCactusXPosition(int cactusXPosition) {
+		this.cactusXPosition = cactusXPosition;
 	}
 
 	public int getCactusWidth() {
@@ -73,5 +80,13 @@ public class Cactus extends Enemy {
 
 	public void setCactusHeight(int cactusHeight) {
 		this.cactusHeight = cactusHeight;
+	}
+
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	public void setImage(BufferedImage image) {
+		this.image = image;
 	}
 }

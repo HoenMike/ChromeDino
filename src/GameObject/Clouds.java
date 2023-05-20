@@ -46,6 +46,7 @@ public class Clouds {
 		listCloud.add(imageCloud);
 	}
 
+	// Updates the positions of clouds based on dino's speed
 	public void update() {
 		Iterator<ImageCloud> itr = listCloud.iterator();
 		ImageCloud firstElement = itr.next();
@@ -61,12 +62,14 @@ public class Clouds {
 		}
 	}
 
+	// Draws the clouds on the screen
 	public void draw(Graphics g) {
 		for (ImageCloud imgLand : listCloud) {
 			g.drawImage(cloud, (int) imgLand.getPosX(), imgLand.getPosY(), null);
 		}
 	}
 
+	// Represents a single cloud image with its position
 	private class ImageCloud {
 		private float posX;
 		private int posY;

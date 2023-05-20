@@ -3,7 +3,6 @@ package GameObject;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Graphics;
-// import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
@@ -15,7 +14,7 @@ import Handler.ScoringSystem;
 
 public class Dino {
 
-	public static final int GROUND_Y_POSITION = 80;
+	public static final int INITIAL_Y_POSITION = 80;
 	public static final float GRAVITY = 0.4f;
 
 	private static final int NORMAL_RUN = 0;
@@ -43,7 +42,7 @@ public class Dino {
 
 	public Dino() {
 		dinoXPosition = 50;
-		dinoYPosition = GROUND_Y_POSITION;
+		dinoYPosition = INITIAL_Y_POSITION;
 		dinoCollisionShape = new Rectangle();
 		// run animation
 		normalRunAnimation = new Animation(90);
@@ -67,52 +66,53 @@ public class Dino {
 		scoringSystem = new ScoringSystem();
 	}
 
+	// Draws the Dino on the screen based on its state
 	public void draw(Graphics g) {
 		switch (getState()) {
 			case NORMAL_RUN:
-				g.drawImage(normalRunAnimation.getFrame(), (int) getDinoXPosition(), (int) getDinoYPosition(), null);
+				g.drawImage(normalRunAnimation.getFrame(), (int) getDinoXPosition(), (int) getInitialYPosition(), null);
 				break;
 			case JUMPING:
-				g.drawImage(jumping, (int) getDinoXPosition(), (int) getDinoYPosition(), null);
+				g.drawImage(jumping, (int) getDinoXPosition(), (int) getInitialYPosition(), null);
 				break;
 			case CROUCH_RUN:
-				g.drawImage(crouchRunAnimation.getFrame(), (int) getDinoXPosition(), (int) (getDinoYPosition() + 20),
+				g.drawImage(crouchRunAnimation.getFrame(), (int) getDinoXPosition(), (int) (getInitialYPosition() + 20),
 						null);
 				break;
 			case DEATH:
-				g.drawImage(dead, (int) getDinoXPosition(), (int) getDinoYPosition(), null);
+				g.drawImage(dead, (int) getDinoXPosition(), (int) getInitialYPosition(), null);
 				break;
 		}
-		// Rectangle bound = getDinoCollisionShape();
-		// g.setColor(Color.RED);
-		// g.drawRect(bound.x, bound.y, bound.width, bound.height);
 	}
 
+	// Updates the Dino's position and animation frame
 	public void update() {
 		normalRunAnimation.updateFrame();
 		crouchRunAnimation.updateFrame();
-		if (getDinoYPosition() >= GROUND_Y_POSITION) {
-			setDinoYPosition(GROUND_Y_POSITION);
+		if (getInitialYPosition() >= INITIAL_Y_POSITION) {
+			setDinoYPosition(INITIAL_Y_POSITION);
 			if (getState() != CROUCH_RUN) {
 				setState(NORMAL_RUN);
 			}
 		} else {
 			setDinoSpeedY(getDinoSpeedY() + GRAVITY);
-			setDinoYPosition(getDinoYPosition() + getDinoSpeedY());
+			setDinoYPosition(getInitialYPosition() + getDinoSpeedY());
 		}
 	}
 
+	// Makes the Dino jump if it is on the ground
 	public void jump() {
-		if (getDinoYPosition() >= GROUND_Y_POSITION) {
+		if (getInitialYPosition() >= INITIAL_Y_POSITION - 15) {
 			if (jumpSound != null) {
 				jumpSound.play();
 			}
 			setDinoSpeedY(-7.5f);
-			setDinoYPosition(getDinoYPosition() + getDinoSpeedY());
+			setDinoYPosition(getInitialYPosition() + getDinoSpeedY());
 			setState(JUMPING);
 		}
 	}
 
+	// Makes the Dino crouch or stand up
 	public void crouch(boolean isCrouch) {
 		if (getState() == JUMPING) {
 			return;
@@ -124,22 +124,24 @@ public class Dino {
 		}
 	}
 
+	// Returns the collision shape of the Dino based on its state
 	public Rectangle getDinoCollisionShape() {
 		dinoCollisionShape = new Rectangle();
 		if (getState() == CROUCH_RUN) {
 			dinoCollisionShape.x = (int) getDinoXPosition() + 5;
-			dinoCollisionShape.y = (int) getDinoYPosition() + 20;
+			dinoCollisionShape.y = (int) getInitialYPosition() + 20;
 			dinoCollisionShape.width = crouchRunAnimation.getFrame().getWidth() - 10;
 			dinoCollisionShape.height = crouchRunAnimation.getFrame().getHeight();
 		} else {
 			dinoCollisionShape.x = (int) getDinoXPosition() + 5;
-			dinoCollisionShape.y = (int) getDinoYPosition();
+			dinoCollisionShape.y = (int) getInitialYPosition();
 			dinoCollisionShape.width = normalRunAnimation.getFrame().getWidth() - 10;
 			dinoCollisionShape.height = normalRunAnimation.getFrame().getHeight();
 		}
 		return dinoCollisionShape;
 	}
 
+	// Sets the Dino's state to death or normal run
 	public void dead(boolean isDeath) {
 		if (isDeath) {
 			setState(DEATH);
@@ -149,19 +151,17 @@ public class Dino {
 		}
 	}
 
+	// Plays the sound effect for the Dino's death
 	public void playDeadSound() {
 		deadSound.play();
 	}
 
 	public void reset() {
-		setDinoYPosition(GROUND_Y_POSITION);
+		setDinoYPosition(INITIAL_Y_POSITION);
 		scoringSystem.resetScore();
 	}
 
-	public ScoringSystem getScoringSystem() {
-		return scoringSystem;
-	}
-
+	// Getters and setters
 	public float getDinoSpeedX() {
 		return dinoSpeedX;
 	}
@@ -170,7 +170,7 @@ public class Dino {
 		this.dinoSpeedX = dinoSpeedX;
 	}
 
-	public float getDinoYPosition() {
+	public float getInitialYPosition() {
 		return dinoYPosition;
 	}
 
