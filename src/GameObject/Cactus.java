@@ -19,9 +19,9 @@ public class Cactus extends Enemy {
 
 	public Cactus(Dino dino, int cactusXPosition, int cactusWidth, int cactusHeight, BufferedImage image) {
 		this.dino = dino;
-		setCactusXPosition(cactusXPosition);
-		setCactusWidth(cactusWidth);
-		setCactusHeight(cactusHeight);
+		this.cactusXPosition = cactusXPosition;
+		this.cactusWidth = cactusWidth;
+		this.cactusHeight = cactusHeight;
 		this.image = image;
 		cactusCollisionShape = new Rectangle();
 	}
