@@ -32,7 +32,7 @@ public class Dino {
 
 	private Animation normalRunAnimation;
 	private Animation crouchRunAnimation;
-	private BufferedImage jumping;
+	private BufferedImage jump;
 	private BufferedImage dead;
 
 	private AudioClip jumpSound;
@@ -53,7 +53,7 @@ public class Dino {
 		crouchRunAnimation.addFrame(Resource.getResourceImage("data/dinoCrouch1.png"));
 		crouchRunAnimation.addFrame(Resource.getResourceImage("data/dinoCrouch2.png"));
 		// jump animation
-		jumping = Resource.getResourceImage("data/dinoJump.png");
+		jump = Resource.getResourceImage("data/dinoJump.png");
 		dead = Resource.getResourceImage("data/dinoDeath.png");
 		// sound effects
 		try {
@@ -73,7 +73,7 @@ public class Dino {
 				g.drawImage(normalRunAnimation.getFrame(), (int) getDinoXPosition(), (int) getInitialYPosition(), null);
 				break;
 			case JUMPING:
-				g.drawImage(jumping, (int) getDinoXPosition(), (int) getInitialYPosition(), null);
+				g.drawImage(jump, (int) getDinoXPosition(), (int) getInitialYPosition(), null);
 				break;
 			case CROUCH_RUN:
 				g.drawImage(crouchRunAnimation.getFrame(), (int) getDinoXPosition(), (int) (getInitialYPosition() + 20),
@@ -115,7 +115,9 @@ public class Dino {
 	// Makes the Dino crouch or stand up
 	public void crouch(boolean isCrouch) {
 		if (getState() == JUMPING) {
-			return;
+			setDinoSpeedY(7.5f);
+			setDinoYPosition(getInitialYPosition() + getDinoSpeedY());
+			setState(NORMAL_RUN);
 		}
 		if (isCrouch) {
 			setState(CROUCH_RUN);

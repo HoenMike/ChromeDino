@@ -16,7 +16,7 @@ public class Animation {
 	public Animation(int deltaTime) {
 		this.deltaTime = deltaTime;
 		previousTime = 0;
-		list = new ArrayList<BufferedImage>();
+		list = new ArrayList<>();
 	}
 
 	public void updateFrame() {

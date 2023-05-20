@@ -25,7 +25,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private Dino dino;
 	private EnemiesManager enemiesManager;
 	private Clouds clouds;
-	private Thread thread;
+	
 
 	private boolean isKeyPressed;
 
@@ -51,6 +51,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	}
 
 	public void startGame() {
+		Thread thread;
 		thread = new Thread(this);
 		thread.start();
 	}
@@ -75,6 +76,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		}
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
@@ -101,6 +103,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 					g.drawImage(gameOverButtonImage, 200, 30, null);
 					g.drawImage(replayButtonImage, 283, 50, null);
 				}
+				break;
+			default:
 				break;
 		}
 	}
@@ -141,22 +145,24 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			isKeyPressed = true;
 			switch (gameState) {
 				case START_STATE:
-					if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) {
 						gameState = PLAYING_STATE;
 					}
 					break;
 				case PLAYING_STATE:
-					if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) {
 						dino.jump();
 					} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 						dino.crouch(true);
 					}
 					break;
 				case GAME_OVER_STATE:
-					if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) {
 						gameState = PLAYING_STATE;
 						resetGame();
 					}
+					break;
+				default:
 					break;
 
 			}
@@ -175,8 +181,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-
-	}
+   // TODO document why this method is empty
+ 	}
 
 	private void resetGame() {
 		enemiesManager.reset();
