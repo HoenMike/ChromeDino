@@ -26,7 +26,7 @@ public class Ground {
 		ground2 = Resource.getResourceImage("data/ground2.png");
 		ground3 = Resource.getResourceImage("data/ground3.png");
 		int numberOfImageGround = width / ground1.getWidth() + 2;
-		listGround = new ArrayList<ImageGround>();
+		listGround = new ArrayList<>();
 		for (int i = 0; i < numberOfImageGround; i++) {
 			ImageGround imageGround = new ImageGround();
 			imageGround.setXPosition(i * ground1.getWidth());

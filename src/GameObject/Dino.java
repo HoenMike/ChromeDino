@@ -12,7 +12,7 @@ import Handler.Animation;
 import Handler.Resource;
 import Handler.ScoringSystem;
 
-public class Dino {
+public class Dino extends ScoringSystem {
 
 	public static final int INITIAL_Y_POSITION = 80;
 	public static final float GRAVITY = 0.4f;
@@ -98,6 +98,13 @@ public class Dino {
 			setDinoSpeedY(getDinoSpeedY() + GRAVITY);
 			setDinoYPosition(getInitialYPosition() + getDinoSpeedY());
 		}
+	}
+
+	public boolean whatScore() {
+		if (getScore() <= 50) {
+			return false; 
+		}
+		return true;
 	}
 
 	// Makes the Dino jump if it is on the ground

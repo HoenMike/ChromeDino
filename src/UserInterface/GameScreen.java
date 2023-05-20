@@ -47,7 +47,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		gameOverButtonImage = Resource.getResourceImage("data/gameOverText.png");
 		scoringSystem = new ScoringSystem();
 		enemiesManager = new EnemiesManager(dino, scoringSystem);
-		clouds = new Clouds(GameWindow.SCREEN_WIDTH, dino);
+		clouds = new Clouds(dino);
 	}
 
 	public void startGame() {

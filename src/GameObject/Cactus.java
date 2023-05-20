@@ -39,7 +39,7 @@ public class Cactus extends Enemy {
 	// Returns the collision shape of the cactus
 	public Rectangle getCollision() {
 		cactusCollisionShape = new Rectangle();
-		cactusCollisionShape.x = (int) getCactusXPosition() + (getImage().getWidth() - getCactusWidth()) / 2;
+		cactusCollisionShape.x = getCactusXPosition() + (getImage().getWidth() - getCactusWidth()) / 2;
 		cactusCollisionShape.y = GROUND_POSITION - getImage().getHeight()
 				+ (getImage().getHeight() - getCactusHeight()) / 2;
 		cactusCollisionShape.width = getCactusWidth();

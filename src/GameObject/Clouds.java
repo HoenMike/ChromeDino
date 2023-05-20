@@ -15,10 +15,10 @@ public class Clouds {
 
 	private Dino dino;
 
-	public Clouds(int width, Dino dino) {
+	public Clouds(Dino dino) {
 		this.dino = dino;
 		cloud = Resource.getResourceImage("data/cloud.png");
-		listCloud = new ArrayList<ImageCloud>();
+		listCloud = new ArrayList<>();
 
 		ImageCloud imageCloud = new ImageCloud();
 		imageCloud.setPosX(0);

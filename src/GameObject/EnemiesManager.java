@@ -23,7 +23,7 @@ public class EnemiesManager {
 		rand = new Random();
 		cactus1 = Resource.getResourceImage("data/cactus1.png");
 		cactus2 = Resource.getResourceImage("data/cactus2.png");
-		enemies = new ArrayList<Enemy>();
+		enemies = new ArrayList<>();
 		this.dino = dino;
 		this.scoringSystem = scoringSystem;
 		enemies.add(createCactus());
@@ -49,12 +49,14 @@ public class EnemiesManager {
 
 	private Enemy createCactus() {
 		int type = rand.nextInt(2);
+		int xPos = rand.nextInt(500) + 300;
 		if (type == 0) {
-			return new Cactus(getDino(), 800, cactus1.getWidth() - 10, cactus1.getHeight() - 10, getCactus1());
+			return new Cactus(getDino(), xPos, cactus1.getWidth() - 10, cactus1.getHeight() - 10, getCactus1());
 		} else {
-			return new Cactus(getDino(), 800, cactus2.getWidth() - 10, cactus2.getHeight() - 10, getCactus2());
+			return new Cactus(getDino(), xPos, cactus2.getWidth() - 10, cactus2.getHeight() - 10, getCactus2());
 		}
 	}
+
 
 	public boolean isCollide() {
 		for (Enemy e : getEnemies()) {
