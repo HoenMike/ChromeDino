@@ -30,6 +30,7 @@ public class Dino {
 
 	private int score = 0;
 	private int highScore = 0;
+	private int nextMilestone = 100;
 
 	private int state = NORMAL_RUN;
 
@@ -159,21 +160,27 @@ public class Dino {
 	public void reset() {
 		setDinoYPosition(LAND_Y_POSITION);
 	}
-	
-	public
 
-	 void upScore(int score) {
+	public void upScore(int score) {
 		setScore(getScore() + score);
-		if (getScore() % 100 == 0) {
+		if (getScore() >= getNextMilestone()) {
+			setNextMilestone(getNextMilestone() + 100);
 			scoreUpSound.play();
 		}
 	}
 
-	pu
+	private void setNextMilestone(int nextMilestone) {
+		this.nextMilestone = nextMilestone;
+	}
 
-	
+	private int getNextMilestone() {
+		return nextMilestone;
+	}
 
-	
+	public int getScore() {
+		return score;
+	}
+
 	public void setScore(int score) {
 		this.score = score;
 	}
