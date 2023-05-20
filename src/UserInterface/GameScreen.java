@@ -20,7 +20,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private static final int PLAYING_STATE = 1;
 	private static final int GAME_OVER_STATE = 2;
 
-	private Ground land;
+	private Ground ground;
 	private Dino dino;
 	private EnemiesManager enemiesManager;
 	private Clouds clouds;
@@ -38,7 +38,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 	public GameScreen() {
 		dino = new Dino();
-		land = new Ground(GameWindow.SCREEN_WIDTH, dino);
+		ground = new Ground(GameWindow.SCREEN_WIDTH, dino);
 		dino.setDinoSpeedX(6);
 		replayButtonImage = Resource.getResourceImage("data/replayButton.png");
 		gameOverButtonImage = Resource.getResourceImage("data/gameOverText.png");
@@ -54,7 +54,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	public void gameUpdate() {
 		if (gameState == PLAYING_STATE) {
 			clouds.update();
-			land.update();
+			ground.update();
 			dino.update();
 			enemiesManager.update();
 			if (enemiesManager.isCollide()) {
@@ -82,7 +82,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			case PLAYING_STATE:
 			case GAME_OVER_STATE:
 				clouds.draw(g);
-				land.draw(g);
+				ground.draw(g);
 				enemiesManager.draw(g);
 				dino.draw(g);
 				g.setColor(Color.BLACK);

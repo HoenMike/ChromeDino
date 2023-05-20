@@ -1,6 +1,8 @@
 package UserInterface;
 
 import javax.swing.JFrame;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 public class GameWindow extends JFrame {
 
@@ -10,13 +12,25 @@ public class GameWindow extends JFrame {
 	public GameWindow() {
 		super("Chrome Dino");
 		setSize(SCREEN_WIDTH, 175);
-		setLocation(400, 200);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 
 		gameScreen = new GameScreen();
 		addKeyListener(gameScreen);
 		add(gameScreen);
+
+		centerWindowOnScreen();
+	}
+
+	private void centerWindowOnScreen() {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int screenWidth = screenSize.width;
+		int screenHeight = screenSize.height;
+		int windowWidth = getWidth();
+		int windowHeight = getHeight();
+		int x = (screenWidth - windowWidth) / 2;
+		int y = (screenHeight - windowHeight) / 2;
+		setLocation(x, y);
 	}
 
 	public void startGame() {
@@ -25,6 +39,6 @@ public class GameWindow extends JFrame {
 	}
 
 	public static void main(String args[]) {
-		(new GameWindow()).startGame();
+		new GameWindow().startGame();
 	}
 }

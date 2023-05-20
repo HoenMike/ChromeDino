@@ -3,7 +3,7 @@ package GameObject;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Graphics;
-import java.awt.Color;
+// import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
@@ -14,7 +14,7 @@ import Handler.Resource;
 
 public class Dino {
 
-	public static final int LAND_Y_POSITION = 80;
+	public static final int GROUND_Y_POSITION = 80;
 	public static final float GRAVITY = 0.4f;
 
 	private static final int NORMAL_RUN = 0;
@@ -45,7 +45,7 @@ public class Dino {
 
 	public Dino() {
 		dinoXPosition = 50;
-		dinoYPosition = LAND_Y_POSITION;
+		dinoYPosition = GROUND_Y_POSITION;
 		dinoCollisionShape = new Rectangle();
 		// run animation
 		normalRunAnimation = new Animation(90);
@@ -84,16 +84,16 @@ public class Dino {
 				g.drawImage(dead, (int) getDinoXPosition(), (int) getDinoYPosition(), null);
 				break;
 		}
-		Rectangle bound = getDinoCollisionShape();
-		g.setColor(Color.RED);
-		g.drawRect(bound.x, bound.y, bound.width, bound.height);
+		// Rectangle bound = getDinoCollisionShape();
+		// g.setColor(Color.RED);
+		// g.drawRect(bound.x, bound.y, bound.width, bound.height);
 	}
 
 	public void update() {
 		normalRunAnimation.updateFrame();
 		crouchRunAnimation.updateFrame();
-		if (getDinoYPosition() >= LAND_Y_POSITION) {
-			setDinoYPosition(LAND_Y_POSITION);
+		if (getDinoYPosition() >= GROUND_Y_POSITION) {
+			setDinoYPosition(GROUND_Y_POSITION);
 			if (getState() != CROUCH_RUN) {
 				setState(NORMAL_RUN);
 			}
@@ -104,7 +104,7 @@ public class Dino {
 	}
 
 	public void jump() {
-		if (getDinoYPosition() >= LAND_Y_POSITION) {
+		if (getDinoYPosition() >= GROUND_Y_POSITION) {
 			if (jumpSound != null) {
 				jumpSound.play();
 			}
@@ -158,7 +158,8 @@ public class Dino {
 	}
 
 	public void reset() {
-		setDinoYPosition(LAND_Y_POSITION);
+		setDinoYPosition(GROUND_Y_POSITION);
+		setNextMilestone(100);
 	}
 
 	public void upScore(int score) {
@@ -169,6 +170,7 @@ public class Dino {
 		}
 	}
 
+	// getter setter
 	private void setNextMilestone(int nextMilestone) {
 		this.nextMilestone = nextMilestone;
 	}
