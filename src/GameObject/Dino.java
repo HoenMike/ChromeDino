@@ -161,8 +161,8 @@ public class Dino {
 		setDinoYPosition(LAND_Y_POSITION);
 	}
 
-	public void upScore() {
-		setScore(getScore() + 1);
+	public void upScore(int score) {
+		setScore(getScore() + score);
 
 		if (getScore() % 100 == 0) {
 			scoreUpSound.play();

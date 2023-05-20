@@ -32,6 +32,7 @@ public class EnemiesManager {
 		}
 		Enemy enemy = enemies.get(0);
 		if (enemy.isOutOfScreen()) {
+			dino.upScore(10);
 			enemies.clear();
 			enemies.add(createCactus());
 		}

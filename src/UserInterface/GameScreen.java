@@ -34,7 +34,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private BufferedImage gameOverButtonImage;
 
 	private long lastScoreUpdateTime;
-	private final long SCORE_UPDATE_INTERVAL = 500; // 0.5 second
+	private final long SCORE_UPDATE_INTERVAL = 200; // 0.2 second
 
 	public GameScreen() {
 		dino = new Dino();
@@ -65,7 +65,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 			long currentTime = System.currentTimeMillis();
 			if (currentTime - lastScoreUpdateTime >= SCORE_UPDATE_INTERVAL) {
-				dino.upScore();
+				dino.upScore(1);
 				lastScoreUpdateTime = currentTime;
 			}
 		}
