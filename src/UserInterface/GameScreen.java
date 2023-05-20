@@ -13,6 +13,7 @@ import GameObject.Dino;
 import GameObject.EnemiesManager;
 import GameObject.Ground;
 import Handler.Resource;
+import Handler.ScoringSystem;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 
@@ -36,13 +37,16 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private long lastScoreUpdateTime;
 	private final long SCORE_UPDATE_INTERVAL = 200; // 0.2 second
 
+	private ScoringSystem scoringSystem;
+
 	public GameScreen() {
 		dino = new Dino();
 		ground = new Ground(GameWindow.SCREEN_WIDTH, dino);
 		dino.setDinoSpeedX(6);
 		replayButtonImage = Resource.getResourceImage("data/replayButton.png");
 		gameOverButtonImage = Resource.getResourceImage("data/gameOverText.png");
-		enemiesManager = new EnemiesManager(dino);
+		scoringSystem = new ScoringSystem();
+		enemiesManager = new EnemiesManager(dino, scoringSystem);
 		clouds = new Clouds(GameWindow.SCREEN_WIDTH, dino);
 	}
 
@@ -65,7 +69,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 			long currentTime = System.currentTimeMillis();
 			if (currentTime - lastScoreUpdateTime >= SCORE_UPDATE_INTERVAL) {
-				dino.upScore(1);
+				scoringSystem.increaseScore(1);
 				lastScoreUpdateTime = currentTime;
 			}
 		}
@@ -86,11 +90,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				enemiesManager.draw(g);
 				dino.draw(g);
 				g.setColor(Color.BLACK);
-				if (dino.getHighScore() > 0) {
-					g.drawString("HI: " + String.format("%05d", dino.getHighScore()), getWidth() - 60, 20);
-					g.drawString(String.format("%05d", dino.getScore()), getWidth() - 42, 40);
+				if (scoringSystem.getHighScore() > 0) {
+					g.drawString("HI: " + String.format("%05d", scoringSystem.getHighScore()), getWidth() - 60, 20);
+					g.drawString(String.format("%05d", scoringSystem.getScore()), getWidth() - 42, 40);
 				} else {
-					g.drawString(String.format("%05d", dino.getScore()), getWidth() - 42, 20);
+					g.drawString(String.format("%05d", scoringSystem.getScore()), getWidth() - 42, 20);
 				}
 
 				if (gameState == GAME_OVER_STATE) {
@@ -178,5 +182,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		enemiesManager.reset();
 		dino.dead(false);
 		dino.reset();
+		scoringSystem.resetScore();
 	}
 }

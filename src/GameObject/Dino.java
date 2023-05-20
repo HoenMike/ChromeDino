@@ -11,6 +11,7 @@ import java.net.URL;
 
 import Handler.Animation;
 import Handler.Resource;
+import Handler.ScoringSystem;
 
 public class Dino {
 
@@ -28,10 +29,6 @@ public class Dino {
 	private float dinoSpeedY;
 	private Rectangle dinoCollisionShape;
 
-	private int score = 0;
-	private int highScore = 0;
-	private int nextMilestone = 100;
-
 	private int state = NORMAL_RUN;
 
 	private Animation normalRunAnimation;
@@ -41,7 +38,8 @@ public class Dino {
 
 	private AudioClip jumpSound;
 	private AudioClip deadSound;
-	private AudioClip scoreUpSound;
+
+	private ScoringSystem scoringSystem;
 
 	public Dino() {
 		dinoXPosition = 50;
@@ -62,10 +60,11 @@ public class Dino {
 		try {
 			jumpSound = Applet.newAudioClip(new URL("file", "", "data/jump.wav"));
 			deadSound = Applet.newAudioClip(new URL("file", "", "data/dead.wav"));
-			scoreUpSound = Applet.newAudioClip(new URL("file", "", "data/scoreUp.wav"));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+
+		scoringSystem = new ScoringSystem();
 	}
 
 	public void draw(Graphics g) {
@@ -144,10 +143,7 @@ public class Dino {
 	public void dead(boolean isDeath) {
 		if (isDeath) {
 			setState(DEATH);
-			if (getScore() >= getHighScore()) {
-				setHighScore(getScore());
-			}
-			setScore(0);
+			scoringSystem.resetScore();
 		} else {
 			setState(NORMAL_RUN);
 		}
@@ -159,40 +155,11 @@ public class Dino {
 
 	public void reset() {
 		setDinoYPosition(GROUND_Y_POSITION);
-		setNextMilestone(100);
+		scoringSystem.resetScore();
 	}
 
-	public void upScore(int score) {
-		setScore(getScore() + score);
-		if (getScore() >= getNextMilestone()) {
-			setNextMilestone(getNextMilestone() + 100);
-			scoreUpSound.play();
-		}
-	}
-
-	// getter setter
-	private void setNextMilestone(int nextMilestone) {
-		this.nextMilestone = nextMilestone;
-	}
-
-	private int getNextMilestone() {
-		return nextMilestone;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
-
-	public int getHighScore() {
-		return highScore;
-	}
-
-	public void setHighScore(int highScore) {
-		this.highScore = highScore;
+	public ScoringSystem getScoringSystem() {
+		return scoringSystem;
 	}
 
 	public float getDinoSpeedX() {

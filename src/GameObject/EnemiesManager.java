@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import Handler.Resource;
+import Handler.ScoringSystem;
 
 public class EnemiesManager {
 
@@ -16,13 +17,15 @@ public class EnemiesManager {
 
 	private List<Enemy> enemies;
 	private Dino dino;
+	private ScoringSystem scoringSystem;
 
-	public EnemiesManager(Dino dino) {
+	public EnemiesManager(Dino dino, ScoringSystem scoringSystem) {
 		rand = new Random();
 		cactus1 = Resource.getResourceImage("data/cactus1.png");
 		cactus2 = Resource.getResourceImage("data/cactus2.png");
 		enemies = new ArrayList<Enemy>();
 		this.dino = dino;
+		this.scoringSystem = scoringSystem;
 		enemies.add(createCactus());
 	}
 
@@ -32,7 +35,7 @@ public class EnemiesManager {
 		}
 		Enemy enemy = enemies.get(0);
 		if (enemy.isOutOfScreen()) {
-			dino.upScore(10);
+			scoringSystem.increaseScore(10);
 			enemies.clear();
 			enemies.add(createCactus());
 		}
