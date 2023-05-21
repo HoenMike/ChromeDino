@@ -180,7 +180,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO document why this method is empty
 	}
 
 	private void resetGame() {

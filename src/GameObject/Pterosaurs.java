@@ -81,10 +81,6 @@ public class Pterosaurs extends Enemy {
         return pterosaursYPosition;
     }
 
-    private void setPterosaursYPosition(int pterosaursYPosition) {
-        this.pterosaursYPosition = pterosaursYPosition;
-    }
-
     public int getPterosaursWidth() {
         return pterosaursWidth;
     }
