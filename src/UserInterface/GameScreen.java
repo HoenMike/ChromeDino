@@ -41,7 +41,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	public GameScreen() {
 		dino = new Dino();
 		ground = new Ground(GameWindow.SCREEN_WIDTH, dino);
-		dino.setDinoSpeed(7);
+		dino.setDinoSpeed(7f);
 		replayButtonImage = Resource.getResourceImage("data/replayButton.png");
 		gameOverButtonImage = Resource.getResourceImage("data/gameOverText.png");
 		scoringSystem = new ScoringSystem();
@@ -70,7 +70,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			if (currentTime - lastScoreUpdateTime >= SCORE_UPDATE_INTERVAL) {
 				scoringSystem.increaseScore(1);
 				lastScoreUpdateTime = currentTime;
-				dino.setDinoSpeed(dino.getDinoSpeed() + 0.01f);
+				if (dino.getDinoSpeed() <= 24) {
+					dino.setDinoSpeed(dino.getDinoSpeed() + 0.01f);
+				}
 			}
 		}
 		// System.out.println("dino.getDinoSpeed(): " + dino.getDinoSpeed());
