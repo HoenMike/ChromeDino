@@ -2,7 +2,7 @@ package GameObject;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-// import java.awt.Color;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public class Pterosaurs extends Enemy {
@@ -50,11 +50,11 @@ public class Pterosaurs extends Enemy {
     // Returns the collision shape of the pterosaurs
     public Rectangle getCollision() {
         pterosaursCollisionShape = new Rectangle();
-        pterosaursCollisionShape.x = getPterosaursXPosition() + (getImage().getWidth() - getPterosaursWidth()) / 2;
-        pterosaursCollisionShape.y = getPterosaursYPosition() + 2 - getImage().getHeight()
+        pterosaursCollisionShape.x = getPterosaursXPosition() + 7 + (getImage().getWidth() - getPterosaursWidth()) / 2;
+        pterosaursCollisionShape.y = getPterosaursYPosition() + 8 - getImage().getHeight()
                 + (getImage().getHeight() - getPterosaursHeight()) / 2;
-        pterosaursCollisionShape.width = getPterosaursWidth() - 7;
-        pterosaursCollisionShape.height = getPterosaursHeight() - 5;
+        pterosaursCollisionShape.width = getPterosaursWidth() - 9;
+        pterosaursCollisionShape.height = getPterosaursHeight() - 8;
         return pterosaursCollisionShape;
     }
 
