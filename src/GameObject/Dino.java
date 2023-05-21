@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import Handler.Animation;
 import Handler.Resource;
 import Handler.ScoringSystem;
