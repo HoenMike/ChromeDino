@@ -2,101 +2,110 @@ package GameObject;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+// import java.awt.Color;
 import java.awt.image.BufferedImage;
-
-import Handler.Animation;
-import Handler.Resource;
 
 public class Pterosaurs extends Enemy {
 
-	public static final int GROUND_POSITION = 125;
+    private int pterosaursXPosition;
+    private int pterosaursYPosition;
+    private int pterosaursWidth;
+    private int pterosaursHeight;
 
-	private Animation fly;
+    private BufferedImage image;
+    private Dino dino;
 
-	private int pterosaursXPosition;
-	private int pterosaursWidth;
-	private int pterosaursHeight;
+    private Rectangle pterosaursCollisionShape;
 
-	private BufferedImage image;
-	private Dino dino;
+    public Pterosaurs(
+            Dino dino,
+            int pterosaursXPosition,
+            int pterosaursYPosition,
+            int pterosaursWidth,
+            int pterosaursHeight,
+            BufferedImage image) {
+        this.dino = dino;
+        this.pterosaursXPosition = pterosaursXPosition;
+        this.pterosaursYPosition = pterosaursYPosition;
+        this.pterosaursWidth = pterosaursWidth;
+        this.pterosaursHeight = pterosaursHeight;
+        setImage(image);
+        pterosaursCollisionShape = new Rectangle();
+    }
 
-	private Rectangle pterosaurCollisionShape;
+    // Updates the pterosaurs position based on dino's speed
+    public void update() {
+        setPterosaursXPosition(getPterosaursXPosition() - (int) dino.getDinoSpeedX());
+    }
 
-	public Pterosaurs(Dino dino, int pterosaursXPosition, int pterosaursWidth, int pterosaursHeight, BufferedImage image) {
-		
-		fly = new Animation(90);
-		fly.addFrame(Resource.getResourceImage("data/pterosaur1.png"));
-		fly.addFrame(Resource.getResourceImage("data/pterosaur2.png"));
+    // Draws the pterosaurs on the screen
+    public void draw(Graphics g) {
+        g.drawImage(getImage(), getPterosaursXPosition(), getPterosaursYPosition() - getImage().getHeight(), null);
+        // g.setColor(Color.BLACK);
+        // g.drawRect(pterosaursCollisionShape.x, pterosaursCollisionShape.y,
+        // pterosaursCollisionShape.width,
+        // pterosaursCollisionShape.height);
+    }
 
-		this.dino = dino;
-		setPterosaursXPosition(pterosaursXPosition);
-		setPterosaursWidth(pterosaursWidth);
-		setPterosaursHeight(pterosaursHeight);
-		setImage(image);
-		pterosaurCollisionShape = new Rectangle();
-	}
+    // Returns the collision shape of the pterosaurs
+    public Rectangle getCollision() {
+        pterosaursCollisionShape = new Rectangle();
+        pterosaursCollisionShape.x = getPterosaursXPosition() + (getImage().getWidth() - getPterosaursWidth()) / 2;
+        pterosaursCollisionShape.y = getPterosaursYPosition() + 2 - getImage().getHeight()
+                + (getImage().getHeight() - getPterosaursHeight()) / 2;
+        pterosaursCollisionShape.width = getPterosaursWidth() - 7;
+        pterosaursCollisionShape.height = getPterosaursHeight() - 5;
+        return pterosaursCollisionShape;
+    }
 
-	// Updates the cactus position based on dino's speed
-	public void update() {
-		setPterosaursXPosition(getPterosaursXPosition() - (int) dino.getDinoSpeedX());
-	}
+    // Checks if the pterosaurs is out of the screen
+    @Override
+    public boolean isOutOfScreen() {
+        if (getPterosaursXPosition() < -getImage().getWidth()) {
+            return true;
+        }
+        return false;
+    }
 
-	// Draws the cactus on the screen
-	public void draw(Graphics g) {
-		g.drawImage(getImage(), getPterosaursXPosition(), GROUND_POSITION - getImage().getHeight(), null);
-	}
+    // Getters and setters
 
-	// Returns the collision shape of the cactus
-	public Rectangle getCollision() {
-		pterosaurCollisionShape = new Rectangle();
-		pterosaurCollisionShape.x = getPterosaursXPosition() + (getImage().getWidth() - getPterosaursWidth()) / 2;
-		pterosaurCollisionShape.y = GROUND_POSITION - getImage().getHeight()
-				+ (getImage().getHeight() - getPterosaursHeight()) / 2;
-		pterosaurCollisionShape.width = getPterosaursWidth();
-		pterosaurCollisionShape.height = getPterosaursHeight();
-		return pterosaurCollisionShape;
-	}
+    public int getPterosaursXPosition() {
+        return pterosaursXPosition;
+    }
 
-	// Checks if the cactus is out of the screen
-	@Override
-	public boolean isOutOfScreen() {
-		if (getPterosaursXPosition() < -getImage().getWidth()) {
-			return true;
-		}
-		return false;
-	}
+    public void setPterosaursXPosition(int pterosaursXPosition) {
+        this.pterosaursXPosition = pterosaursXPosition;
+    }
 
-	// Getters and setters
+    private int getPterosaursYPosition() {
+        return pterosaursYPosition;
+    }
 
-	public int getPterosaursXPosition() {
-		return pterosaursXPosition;
-	}
+    private void setPterosaursYPosition(int pterosaursYPosition) {
+        this.pterosaursYPosition = pterosaursYPosition;
+    }
 
-	public void setPterosaursXPosition(int pterosaursXPosition) {
-		this.pterosaursXPosition = pterosaursXPosition;
-	}
+    public int getPterosaursWidth() {
+        return pterosaursWidth;
+    }
 
-	public int getPterosaursWidth() {
-		return pterosaursWidth;
-	}
+    public void setPterosaursWidth(int pterosaursWidth) {
+        this.pterosaursWidth = pterosaursWidth;
+    }
 
-	public void setPterosaursWidth(int pterosaursWidth) {
-		this.pterosaursWidth = pterosaursWidth;
-	}
+    public int getPterosaursHeight() {
+        return pterosaursHeight;
+    }
 
-	public int getPterosaursHeight() {
-		return pterosaursHeight;
-	}
+    public void setPterosaursHeight(int pterosaursHeight) {
+        this.pterosaursHeight = pterosaursHeight;
+    }
 
-	public void setPterosaursHeight(int pterosaursHeight) {
-		this.pterosaursHeight = pterosaursHeight;
-	}
+    public BufferedImage getImage() {
+        return image;
+    }
 
-	public BufferedImage getImage() {
-		return image;
-	}
-
-	public void setImage(BufferedImage image) {
-		this.image = image;
-	}
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
 }

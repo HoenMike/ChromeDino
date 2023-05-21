@@ -13,6 +13,7 @@ public class EnemiesManager {
 
 	private BufferedImage cactus1;
 	private BufferedImage cactus2;
+	private BufferedImage pterosaurs;
 	private Random rand;
 
 	private List<Enemy> enemies;
@@ -23,10 +24,11 @@ public class EnemiesManager {
 		rand = new Random();
 		cactus1 = Resource.getResourceImage("data/cactus1.png");
 		cactus2 = Resource.getResourceImage("data/cactus2.png");
+		pterosaurs = Resource.getResourceImage("data/pterosaur.png");
 		enemies = new ArrayList<>();
 		this.dino = dino;
 		this.scoringSystem = scoringSystem;
-		enemies.add(createCactus());
+		enemies.add(createEnemy());
 	}
 
 	public void update() {
@@ -37,7 +39,7 @@ public class EnemiesManager {
 		if (enemy.isOutOfScreen()) {
 			scoringSystem.increaseScore(10);
 			enemies.clear();
-			enemies.add(createCactus());
+			enemies.add(createEnemy());
 		}
 	}
 
@@ -47,16 +49,25 @@ public class EnemiesManager {
 		}
 	}
 
-	private Enemy createCactus() {
-		int type = rand.nextInt(2);
-		int xPos = rand.nextInt(500) + 300;
+	private Enemy createEnemy() {
+		int type = rand.nextInt(4); // Updated to include pterosaurs
+		int xPos = rand.nextInt(300) + 800;
+		int yPos;
+		boolean isSpawnHigh = rand.nextBoolean();
+		if (isSpawnHigh) {
+			yPos = 95;
+		} else
+			yPos = 120;
+
 		if (type == 0) {
 			return new Cactus(getDino(), xPos, cactus1.getWidth() - 10, cactus1.getHeight() - 10, getCactus1());
-		} else {
+		} else if (type == 1) {
 			return new Cactus(getDino(), xPos, cactus2.getWidth() - 10, cactus2.getHeight() - 10, getCactus2());
+		} else {
+			return new Pterosaurs(getDino(), xPos, yPos, pterosaurs.getWidth() - 10, pterosaurs.getHeight() - 10,
+					getPterosaurs());
 		}
 	}
-
 
 	public boolean isCollide() {
 		for (Enemy e : getEnemies()) {
@@ -69,7 +80,7 @@ public class EnemiesManager {
 
 	public void reset() {
 		enemies.clear();
-		enemies.add(createCactus());
+		enemies.add(createEnemy());
 	}
 
 	public BufferedImage getCactus1() {
@@ -80,6 +91,10 @@ public class EnemiesManager {
 		return cactus2;
 	}
 
+	public BufferedImage getPterosaurs() {
+		return pterosaurs;
+	}
+
 	public Dino getDino() {
 		return dino;
 	}
@@ -87,5 +102,4 @@ public class EnemiesManager {
 	public List<Enemy> getEnemies() {
 		return enemies;
 	}
-
 }

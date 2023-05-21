@@ -102,7 +102,7 @@ public class Dino extends ScoringSystem {
 
 	public boolean whatScore() {
 		if (getScore() <= 50) {
-			return false; 
+			return false;
 		}
 		return true;
 	}

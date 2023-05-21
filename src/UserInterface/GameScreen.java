@@ -25,7 +25,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private Dino dino;
 	private EnemiesManager enemiesManager;
 	private Clouds clouds;
-	
 
 	private boolean isKeyPressed;
 
@@ -42,7 +41,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	public GameScreen() {
 		dino = new Dino();
 		ground = new Ground(GameWindow.SCREEN_WIDTH, dino);
-		dino.setDinoSpeedX(6);
+		dino.setDinoSpeedX(8);
 		replayButtonImage = Resource.getResourceImage("data/replayButton.png");
 		gameOverButtonImage = Resource.getResourceImage("data/gameOverText.png");
 		scoringSystem = new ScoringSystem();
@@ -181,8 +180,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-   // TODO document why this method is empty
- 	}
+		// TODO document why this method is empty
+	}
 
 	private void resetGame() {
 		enemiesManager.reset();

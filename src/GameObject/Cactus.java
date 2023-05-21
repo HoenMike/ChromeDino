@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 public class Cactus extends Enemy {
 
-	public static final int GROUND_POSITION = 125;
+	public static final int SPAWN_POSITION = 125;
 
 	private int cactusXPosition;
 	private int cactusWidth;
@@ -33,14 +33,14 @@ public class Cactus extends Enemy {
 
 	// Draws the cactus on the screen
 	public void draw(Graphics g) {
-		g.drawImage(getImage(), getCactusXPosition(), GROUND_POSITION - getImage().getHeight(), null);
+		g.drawImage(getImage(), getCactusXPosition(), SPAWN_POSITION - getImage().getHeight(), null);
 	}
 
 	// Returns the collision shape of the cactus
 	public Rectangle getCollision() {
 		cactusCollisionShape = new Rectangle();
 		cactusCollisionShape.x = getCactusXPosition() + (getImage().getWidth() - getCactusWidth()) / 2;
-		cactusCollisionShape.y = GROUND_POSITION - getImage().getHeight()
+		cactusCollisionShape.y = SPAWN_POSITION - getImage().getHeight()
 				+ (getImage().getHeight() - getCactusHeight()) / 2;
 		cactusCollisionShape.width = getCactusWidth();
 		cactusCollisionShape.height = getCactusHeight();
