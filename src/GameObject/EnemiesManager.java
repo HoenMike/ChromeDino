@@ -24,7 +24,7 @@ public class EnemiesManager {
 		rand = new Random();
 		cactus1 = Resource.getResourceImage("data/cactus1.png");
 		cactus2 = Resource.getResourceImage("data/cactus2.png");
-		pterosaurs = Resource.getResourceImage("data/pterosaur1.png");
+		pterosaurs = Resource.getResourceImage("data/pterosaur.png");
 		enemies = new ArrayList<>();
 		this.dino = dino;
 		this.scoringSystem = scoringSystem;
