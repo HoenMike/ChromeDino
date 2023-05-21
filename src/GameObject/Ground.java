@@ -38,7 +38,7 @@ public class Ground {
 	public void update() {
 		Iterator<ImageGround> itr = listGround.iterator();
 		ImageGround firstGround = itr.next();
-		firstGround.setXPosition(firstGround.getXPosition() - dino.getDinoSpeed());
+		firstGround.setXPosition(firstGround.getXPosition() - dino.getDinoSpeedX());
 		float previousPosX = firstGround.getXPosition();
 		while (itr.hasNext()) {
 			ImageGround element = itr.next();

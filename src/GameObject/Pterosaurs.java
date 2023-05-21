@@ -35,7 +35,7 @@ public class Pterosaurs extends Enemy {
 
     // Updates the pterosaurs position based on dino's speed
     public void update() {
-        setPterosaursXPosition(getPterosaursXPosition() - (int) dino.getDinoSpeed());
+        setPterosaursXPosition(getPterosaursXPosition() - (int) dino.getDinoSpeedX());
     }
 
     // Draws the pterosaurs on the screen
