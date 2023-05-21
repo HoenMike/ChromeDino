@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-public class Cactus extends Enemy {
+public class Cactus extends GameObj {
 
 	public static final int SPAWN_POSITION = 125;
 
@@ -12,23 +12,17 @@ public class Cactus extends Enemy {
 	private int cactusWidth;
 	private int cactusHeight;
 
-	private BufferedImage image;
-	private Dino dino;
-
-	private Rectangle cactusCollisionShape;
-
 	public Cactus(Dino dino, int cactusXPosition, int cactusWidth, int cactusHeight, BufferedImage image) {
-		this.dino = dino;
+		setDino(dino);
 		setCactusXPosition(cactusXPosition);
 		setCactusWidth(cactusWidth);
 		setCactusHeight(cactusHeight);
 		setImage(image);
-		cactusCollisionShape = new Rectangle();
 	}
 
 	// Updates the cactus position based on dino's speed
 	public void update() {
-		setCactusXPosition(getCactusXPosition() - (int) dino.getDinoSpeed());
+		setCactusXPosition(getCactusXPosition() - (int) getDino().getDinoSpeedX());
 	}
 
 	// Draws the cactus on the screen
@@ -38,7 +32,7 @@ public class Cactus extends Enemy {
 
 	// Returns the collision shape of the cactus
 	public Rectangle getCollision() {
-		cactusCollisionShape = new Rectangle();
+		Rectangle cactusCollisionShape = new Rectangle();
 		cactusCollisionShape.x = getCactusXPosition() + (getImage().getWidth() - getCactusWidth()) / 2;
 		cactusCollisionShape.y = SPAWN_POSITION - getImage().getHeight()
 				+ (getImage().getHeight() - getCactusHeight()) / 2;
@@ -48,7 +42,6 @@ public class Cactus extends Enemy {
 	}
 
 	// Checks if the cactus is out of the screen
-	@Override
 	public boolean isOutOfScreen() {
 		if (getCactusXPosition() < -getImage().getWidth()) {
 			return true;
@@ -58,35 +51,27 @@ public class Cactus extends Enemy {
 
 	// Getters and setters
 
-	public int getCactusXPosition() {
+	private int getCactusXPosition() {
 		return cactusXPosition;
 	}
 
-	public void setCactusXPosition(int cactusXPosition) {
+	private void setCactusXPosition(int cactusXPosition) {
 		this.cactusXPosition = cactusXPosition;
 	}
 
-	public int getCactusWidth() {
+	private int getCactusWidth() {
 		return cactusWidth;
 	}
 
-	public void setCactusWidth(int cactusWidth) {
+	private void setCactusWidth(int cactusWidth) {
 		this.cactusWidth = cactusWidth;
 	}
 
-	public int getCactusHeight() {
+	private int getCactusHeight() {
 		return cactusHeight;
 	}
 
-	public void setCactusHeight(int cactusHeight) {
+	private void setCactusHeight(int cactusHeight) {
 		this.cactusHeight = cactusHeight;
-	}
-
-	public BufferedImage getImage() {
-		return image;
-	}
-
-	public void setImage(BufferedImage image) {
-		this.image = image;
 	}
 }

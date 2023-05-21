@@ -7,58 +7,69 @@ import java.util.List;
 public class Animation {
 
 	private int currentFrame = 0;
-
 	private long deltaTime;
 	private long previousTime;
-
 	private List<BufferedImage> list;
 
 	public Animation(int deltaTime) {
-		this.deltaTime = deltaTime;
-		previousTime = 0;
-		list = new ArrayList<>();
+		setDeltaTime(deltaTime);
+		setPreviousTime(0);
+		setList(new ArrayList<>());
 	}
 
 	public void updateFrame() {
 		if (System.currentTimeMillis() - getPreviousTime() >= getDeltaTime()) {
 			addCurrentFrame(1);
-			if (getCurrentFrame() >= list.size()) {
+			if (getCurrentFrame() >= getList().size()) {
 				setCurrentFrame(0);
 			}
 			setPreviousTime(System.currentTimeMillis());
 		}
 	}
 
-	private void setPreviousTime(long previousTime) {
-		this.previousTime = previousTime;
+	public void addFrame(BufferedImage image) {
+		getList().add(image);
+	}
+
+	private void addCurrentFrame(int index) {
+		setCurrentFrame(getCurrentFrame() + index);
+	}
+
+	public BufferedImage getFrame() {
+		return getList().get(getCurrentFrame());
+	}
+
+	// Getters and setters
+
+	private int getCurrentFrame() {
+		return currentFrame;
 	}
 
 	private void setCurrentFrame(int currentFrame) {
 		this.currentFrame = currentFrame;
 	}
 
-	private int getCurrentFrame() {
-		return currentFrame;
-	}
-
-	private void addCurrentFrame(int index) {
-		currentFrame += index;
-	}
-
 	private long getDeltaTime() {
 		return deltaTime;
+	}
+
+	private void setDeltaTime(long deltaTime) {
+		this.deltaTime = deltaTime;
 	}
 
 	private long getPreviousTime() {
 		return previousTime;
 	}
 
-	public void addFrame(BufferedImage image) {
-		list.add(image);
+	private void setPreviousTime(long previousTime) {
+		this.previousTime = previousTime;
 	}
 
-	public BufferedImage getFrame() {
-		return list.get(currentFrame);
+	private List<BufferedImage> getList() {
+		return list;
 	}
 
+	private void setList(List<BufferedImage> list) {
+		this.list = list;
+	}
 }

@@ -1,77 +1,79 @@
 package GameObject;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.management.loading.PrivateMLet;
+
 import Handler.Resource;
 import Handler.ScoringSystem;
 
-public class EnemiesManager {
+public class EnemiesManager extends GameObj{
 
 	private BufferedImage cactus1;
 	private BufferedImage cactus2;
 	private BufferedImage pterosaurs;
 	private Random rand;
 
-	private List<Enemy> enemies;
-	private Dino dino;
+	private List<GameObj> gameObj;
 	private ScoringSystem scoringSystem;
 
 	public EnemiesManager(Dino dino, ScoringSystem scoringSystem) {
-		rand = new Random();
-		cactus1 = Resource.getResourceImage("data/cactus1.png");
-		cactus2 = Resource.getResourceImage("data/cactus2.png");
-		pterosaurs = Resource.getResourceImage("data/pterosaur.png");
-		enemies = new ArrayList<>();
-		this.dino = dino;
-		this.scoringSystem = scoringSystem;
-		enemies.add(createEnemy());
+		setRand(new Random());
+		setCactus1(Resource.getResourceImage("data/cactus1.png"));
+		setCactus2(Resource.getResourceImage("data/cactus2.png"));
+		setPterosaurs(Resource.getResourceImage("data/pterosaur.png"));
+		setGameObj(new ArrayList<>());
+		setDino(dino);
+		setScoringSystem(scoringSystem);
+		getGameObj().add(createEnemy());
 	}
 
 	public void update() {
-		for (Enemy e : getEnemies()) {
+		for (GameObj e : getGameObj()) {
 			e.update();
 		}
-		Enemy enemy = enemies.get(0);
+		GameObj enemy = getGameObj().get(0);
 		if (enemy.isOutOfScreen()) {
-			scoringSystem.increaseScore(10);
-			enemies.clear();
-			enemies.add(createEnemy());
+			getScoringSystem().increaseScore(10);
+			getGameObj().clear();
+			getGameObj().add(createEnemy());
 		}
 	}
 
 	public void draw(Graphics g) {
-		for (Enemy e : getEnemies()) {
+		for (GameObj e : getGameObj()) {
 			e.draw(g);
 		}
 	}
 
-	private Enemy createEnemy() {
-		int type = rand.nextInt(4); // Updated to include pterosaurs
-		int xPos = rand.nextInt(300) + 800;
+	private GameObj createEnemy() {
+		int type = getRand().nextInt(4); // Updated to include pterosaurs
+		int xPos = getRand().nextInt(300) + 800;
 		int yPos;
-		boolean isSpawnHigh = rand.nextBoolean();
+		boolean isSpawnHigh = getRand().nextBoolean();
 		if (isSpawnHigh) {
 			yPos = 95;
 		} else
 			yPos = 120;
 
 		if (type == 0) {
-			return new Cactus(getDino(), xPos, cactus1.getWidth() - 10, cactus1.getHeight() - 10, getCactus1());
+			return new Cactus(getDino(), xPos, getCactus1().getWidth() - 10, getCactus1().getHeight() - 10, getCactus1());
 		} else if (type == 1) {
-			return new Cactus(getDino(), xPos, cactus2.getWidth() - 10, cactus2.getHeight() - 10, getCactus2());
+			return new Cactus(getDino(), xPos, getCactus2().getWidth() - 10, getCactus2().getHeight() - 10, getCactus2());
 		} else {
-			return new Pterosaurs(getDino(), xPos, yPos, pterosaurs.getWidth() - 10, pterosaurs.getHeight() - 10,
+			return new Pterosaurs(getDino(), xPos, yPos, getPterosaurs().getWidth() - 10, getPterosaurs().getHeight() - 10,
 					getPterosaurs());
 		}
 	}
 
 	public boolean isCollide() {
-		for (Enemy e : getEnemies()) {
-			if (dino.getDinoCollisionShape().intersects(e.getCollision())) {
+		for (GameObj e : getGameObj()) {
+			if (getDino().getDinoCollisionShape().intersects(e.getCollision())) {
 				return true;
 			}
 		}
@@ -79,27 +81,67 @@ public class EnemiesManager {
 	}
 
 	public void reset() {
-		enemies.clear();
-		enemies.add(createEnemy());
+		getGameObj().clear();
+		getGameObj().add(createEnemy());
 	}
 
-	public BufferedImage getCactus1() {
+	public Rectangle getCollision() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getCollision'");
+	}
+
+	public boolean isOutOfScreen() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'isOutOfScreen'");
+	}
+
+	// Getters and setters
+	
+	private BufferedImage getCactus1() {
 		return cactus1;
 	}
 
-	public BufferedImage getCactus2() {
+	private void setCactus1(BufferedImage cactus1) {
+		this.cactus1 = cactus1;
+	}
+
+	private BufferedImage getCactus2() {
 		return cactus2;
 	}
 
-	public BufferedImage getPterosaurs() {
+	private void setCactus2(BufferedImage cactus2) {
+		this.cactus2 = cactus2;
+	}
+
+	private BufferedImage getPterosaurs() {
 		return pterosaurs;
 	}
 
-	public Dino getDino() {
-		return dino;
+	private void setPterosaurs(BufferedImage pterosaurs) {
+		this.pterosaurs = pterosaurs;
 	}
 
-	public List<Enemy> getEnemies() {
-		return enemies;
+	private Random getRand() {
+		return rand;
+	}
+
+	private void setRand(Random rand) {
+		this.rand = rand;
+	}
+
+	private List<GameObj> getGameObj() {
+		return gameObj;
+	}
+
+	private void setGameObj(List<GameObj> gameObj) {
+		this.gameObj = gameObj;
+	}
+
+	private ScoringSystem getScoringSystem() {
+		return scoringSystem;
+	}
+
+	private void setScoringSystem(ScoringSystem scoringSystem) {
+		this.scoringSystem = scoringSystem;
 	}
 }

@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-
 import javax.swing.JPanel;
 
 import GameObject.Clouds;
@@ -20,33 +19,30 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private static final int START_STATE = 0;
 	private static final int PLAYING_STATE = 1;
 	private static final int GAME_OVER_STATE = 2;
+	private static final long SCORE_UPDATE_INTERVAL = 200; // 0.2 second
 
-	private Ground ground;
 	private Dino dino;
+	private Ground ground;
+	private ScoringSystem scoringSystem;
 	private EnemiesManager enemiesManager;
 	private Clouds clouds;
-
-	private boolean isKeyPressed;
-
-	private int gameState = START_STATE;
-
+	
 	private BufferedImage replayButtonImage;
 	private BufferedImage gameOverButtonImage;
-
+	
+	private int gameState = START_STATE;
+	private boolean isKeyPressed;
 	private long lastScoreUpdateTime;
-	private final long SCORE_UPDATE_INTERVAL = 200; // 0.2 second
-
-	private ScoringSystem scoringSystem;
 
 	public GameScreen() {
-		dino = new Dino();
-		ground = new Ground(GameWindow.SCREEN_WIDTH, dino);
-		dino.setDinoSpeed(7f);
-		replayButtonImage = Resource.getResourceImage("data/replayButton.png");
-		gameOverButtonImage = Resource.getResourceImage("data/gameOverText.png");
-		scoringSystem = new ScoringSystem();
-		enemiesManager = new EnemiesManager(dino, scoringSystem);
-		clouds = new Clouds(dino);
+		setDino(new Dino());
+		setGround(new Ground(GameWindow.SCREEN_WIDTH, getDino()));
+		getDino().setDinoSpeedX(7f);
+		setReplayButtonImage(Resource.getResourceImage("data/replayButton.png"));
+		setGameOverButtonImage(Resource.getResourceImage("data/gameOverText.png"));
+		setScoringSystem(new ScoringSystem());
+		setEnemiesManager(new EnemiesManager(getDino(), getScoringSystem()));
+		setClouds(new Clouds(getDino()));
 	}
 
 	public void startGame() {
@@ -56,54 +52,52 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	}
 
 	public void gameUpdate() {
-		if (gameState == PLAYING_STATE) {
-			clouds.update();
-			ground.update();
-			dino.update();
-			enemiesManager.update();
-			if (enemiesManager.isCollide()) {
-				dino.playDeadSound();
-				gameState = GAME_OVER_STATE;
-				dino.dead(true);
+		if (getGameState() == PLAYING_STATE) {
+			getClouds().update();
+			getGround().update();
+			getDino().update();
+			getEnemiesManager().update();
+			if (getEnemiesManager().isCollide()) {
+				getDino().playDeadSound();
+				setGameState(GAME_OVER_STATE);
+				getDino().dead(true);
 			}
 			long currentTime = System.currentTimeMillis();
-			if (currentTime - lastScoreUpdateTime >= SCORE_UPDATE_INTERVAL) {
-				scoringSystem.increaseScore(1);
-				lastScoreUpdateTime = currentTime;
-				if (dino.getDinoSpeed() <= 24) {
-					dino.setDinoSpeed(dino.getDinoSpeed() + 0.01f);
+			if (currentTime - getLastScoreUpdateTime() >= SCORE_UPDATE_INTERVAL) {
+				getScoringSystem().increaseScore(1);
+				setLastScoreUpdateTime(currentTime);
+				if (getDino().getDinoSpeedX() <= 24) {
+					getDino().setDinoSpeedX(getDino().getDinoSpeedX() + 0.01f);
 				}
 			}
 		}
-		// System.out.println("dino.getDinoSpeed(): " + dino.getDinoSpeed());
 	}
 
-	@Override
 	public void paint(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 
-		switch (gameState) {
+		switch (getGameState()) {
 			case START_STATE:
-				dino.draw(g);
+				getDino().draw(g);
 				break;
 			case PLAYING_STATE:
 			case GAME_OVER_STATE:
-				clouds.draw(g);
-				ground.draw(g);
-				enemiesManager.draw(g);
-				dino.draw(g);
+				getClouds().draw(g);
+				getGround().draw(g);
+				getEnemiesManager().draw(g);
+				getDino().draw(g);
 				g.setColor(Color.BLACK);
-				if (scoringSystem.getHighScore() > 0) {
-					g.drawString("HI: " + String.format("%05d", scoringSystem.getHighScore()), getWidth() - 60, 20);
-					g.drawString(String.format("%05d", scoringSystem.getScore()), getWidth() - 42, 40);
+				if (getScoringSystem().getHighScore() > 0) {
+					g.drawString("HI: " + String.format("%05d", getScoringSystem().getHighScore()), getWidth() - 60, 20);
+					g.drawString(String.format("%05d", getScoringSystem().getScore()), getWidth() - 42, 40);
 				} else {
-					g.drawString(String.format("%05d", scoringSystem.getScore()), getWidth() - 42, 20);
+					g.drawString(String.format("%05d", getScoringSystem().getScore()), getWidth() - 42, 20);
 				}
 
-				if (gameState == GAME_OVER_STATE) {
-					g.drawImage(gameOverButtonImage, 200, 30, null);
-					g.drawImage(replayButtonImage, 283, 50, null);
+				if (getGameState() == GAME_OVER_STATE) {
+					g.drawImage(getGameOverButtonImage(), 200, 30, null);
+					g.drawImage(getReplayButtonImage(), 283, 50, null);
 				}
 				break;
 			default:
@@ -111,7 +105,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		}
 	}
 
-	@Override
 	public void run() {
 
 		int fps = 100;
@@ -141,26 +134,25 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		}
 	}
 
-	@Override
 	public void keyPressed(KeyEvent e) {
-		if (!isKeyPressed) {
-			isKeyPressed = true;
-			switch (gameState) {
+		if (!getIsKeyPressed()) {
+			setIsKeyPressed(true);
+			switch (getGameState()) {
 				case START_STATE:
 					if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) {
-						gameState = PLAYING_STATE;
+						setGameState(PLAYING_STATE);
 					}
 					break;
 				case PLAYING_STATE:
 					if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) {
-						dino.jump();
+						getDino().jump();
 					} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-						dino.crouch(true);
+						getDino().crouch(true);
 					}
 					break;
 				case GAME_OVER_STATE:
 					if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) {
-						gameState = PLAYING_STATE;
+						setGameState(PLAYING_STATE);
 						resetGame();
 					}
 					break;
@@ -172,31 +164,111 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 		// Check for ESC key press
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			if (gameState != START_STATE) {
-				gameState = START_STATE;
+			if (getGameState() != START_STATE) {
+				setGameState(START_STATE);
 				resetGame();
 			}
 		}
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e) {
-		isKeyPressed = false;
-		if (gameState == PLAYING_STATE) {
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				dino.crouch(false);
-			}
+		setIsKeyPressed(false);
+		if (getGameState() == PLAYING_STATE &&  (e.getKeyCode() == KeyEvent.VK_DOWN)) {
+			getDino().crouch(false);
+			
 		}
 	}
 
-	@Override
 	public void keyTyped(KeyEvent e) {
-	}
+   // TODO document why this method is empty
+ 	}
 
 	private void resetGame() {
-		enemiesManager.reset();
-		dino.dead(false);
-		dino.reset();
-		scoringSystem.resetScore();
+		getEnemiesManager().reset();
+		getDino().dead(false);
+		getDino().reset();
+		getScoringSystem().resetScore();
+	}
+
+	// Getters and setters
+
+	private Dino getDino() {
+		return dino;
+	}
+
+	private void setDino(Dino dino) {
+		this.dino = dino;
+	}
+
+	private Ground getGround() {
+		return ground;
+	}
+
+	private void setGround(Ground ground) {
+		this.ground = ground;
+	}
+
+	private ScoringSystem getScoringSystem() {
+		return scoringSystem;
+	}
+
+	private void setScoringSystem(ScoringSystem scoringSystem) {
+		this.scoringSystem = scoringSystem;
+	}
+
+	private EnemiesManager getEnemiesManager() {
+		return enemiesManager;
+	}
+
+	private void setEnemiesManager(EnemiesManager enemiesManager) {
+		this.enemiesManager = enemiesManager;
+	}
+
+	private Clouds getClouds() {
+		return clouds;
+	}
+
+	private void setClouds(Clouds clouds) {
+		this.clouds = clouds;
+	}
+
+	private BufferedImage getReplayButtonImage() {
+		return replayButtonImage;
+	}
+
+	private void setReplayButtonImage(BufferedImage replayButtonImage) {
+		this.replayButtonImage = replayButtonImage;
+	}
+
+	private BufferedImage getGameOverButtonImage() {
+		return gameOverButtonImage;
+	}
+
+	private void setGameOverButtonImage(BufferedImage gameOverButtonImage) {
+		this.gameOverButtonImage = gameOverButtonImage;
+	}
+
+	private int getGameState() {
+		return gameState;
+	}
+
+	private void setGameState(int gameState) {
+		this.gameState = gameState;
+	}
+
+	private boolean getIsKeyPressed() {
+		return isKeyPressed;
+	}
+
+	private void setIsKeyPressed(boolean isKeyPressed) {
+		this.isKeyPressed = isKeyPressed;
+	}
+
+	private long getLastScoreUpdateTime() {
+		return lastScoreUpdateTime;
+	}
+
+	private void setLastScoreUpdateTime(long lastScoreUpdateTime) {
+		this.lastScoreUpdateTime = lastScoreUpdateTime;
 	}
 }

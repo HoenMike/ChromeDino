@@ -16,9 +16,9 @@ public class GameWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 
-		gameScreen = new GameScreen();
-		addKeyListener(gameScreen);
-		add(gameScreen);
+		setGameScreen(new GameScreen());
+		addKeyListener(getGameScreen());
+		add(getGameScreen());
 
 		centerWindowOnScreen();
 	}
@@ -36,10 +36,20 @@ public class GameWindow extends JFrame {
 
 	public void startGame() {
 		setVisible(true);
-		gameScreen.startGame();
+		getGameScreen().startGame();
 	}
 
 	public static void main(String[] args) {
 		new GameWindow().startGame();
+	}
+
+	// Getters and setters
+	
+	private GameScreen getGameScreen() {
+		return gameScreen;
+	}
+
+	private void setGameScreen(GameScreen gameScreen) {
+		this.gameScreen = gameScreen;
 	}
 }

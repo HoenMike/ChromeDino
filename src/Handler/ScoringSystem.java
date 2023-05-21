@@ -14,34 +14,10 @@ public class ScoringSystem {
 
     public ScoringSystem() {
         try {
-            scoreUpSound = Applet.newAudioClip(new URL("file", "", "data/scoreUp.wav"));
+            setScoreUpSound(Applet.newAudioClip(new URL("file", "", "data/scoreUp.wav")));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getHighScore() {
-        return highScore;
-    }
-
-    public void setHighScore(int highScore) {
-        this.highScore = highScore;
-    }
-
-    public int getNextMilestone() {
-        return nextMilestone;
-    }
-
-    public void setNextMilestone(int nextMilestone) {
-        this.nextMilestone = nextMilestone;
     }
 
     public void resetScore() {
@@ -56,9 +32,43 @@ public class ScoringSystem {
         setScore(getScore() + score);
         if (getScore() >= getNextMilestone()) {
             setNextMilestone(getNextMilestone() + 100);
-            if (scoreUpSound != null) {
-                scoreUpSound.play();
+            if (getScoreUpSound() != null) {
+                getScoreUpSound().play();
             }
         }
+    }
+
+    // Getters and setters
+    
+    public int getScore() {
+        return score;
+    }
+
+    private void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getHighScore() {
+        return highScore;
+    }
+
+    private void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+    private int getNextMilestone() {
+        return nextMilestone;
+    }
+
+    private void setNextMilestone(int nextMilestone) {
+        this.nextMilestone = nextMilestone;
+    }
+
+    private AudioClip getScoreUpSound() {
+        return scoreUpSound;
+    }
+
+    private void setScoreUpSound(AudioClip scoreUpSound) {
+        this.scoreUpSound = scoreUpSound;
     }
 }
