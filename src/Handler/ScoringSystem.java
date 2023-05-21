@@ -45,7 +45,9 @@ public class ScoringSystem {
     }
 
     public void resetScore() {
-        setHighScore(getScore());
+        if (getScore() >= getHighScore()) {
+            setHighScore(getScore());
+        }
         setScore(0);
         setNextMilestone(100);
     }

@@ -166,6 +166,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 			}
 		}
+
+		// Check for ESC key press
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			if (gameState != START_STATE) {
+				gameState = START_STATE;
+				resetGame();
+			}
+		}
 	}
 
 	@Override
