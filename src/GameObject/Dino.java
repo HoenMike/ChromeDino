@@ -168,6 +168,7 @@ public class Dino extends ScoringSystem {
 	public void reset() {
 		setDinoYPosition(INITIAL_Y_POSITION);
 		scoringSystem.resetScore();
+		setDinoSpeed(7);
 	}
 
 	// Getters and setters

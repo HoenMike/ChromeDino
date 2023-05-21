@@ -66,18 +66,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				gameState = GAME_OVER_STATE;
 				dino.dead(true);
 			}
-
 			long currentTime = System.currentTimeMillis();
 			if (currentTime - lastScoreUpdateTime >= SCORE_UPDATE_INTERVAL) {
 				scoringSystem.increaseScore(1);
 				lastScoreUpdateTime = currentTime;
-
-				// Increase dinosaur speed every 5 seconds
-				if (currentTime % 5000 == 0) {
-					dino.setDinoSpeed(dino.getDinoSpeed() + 0.1f);
-				}
+				dino.setDinoSpeed(dino.getDinoSpeed() + 0.01f);
 			}
 		}
+		// System.out.println("dino.getDinoSpeed(): " + dino.getDinoSpeed());
 	}
 
 	@Override
