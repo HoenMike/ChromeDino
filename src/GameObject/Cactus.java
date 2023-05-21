@@ -28,7 +28,7 @@ public class Cactus extends Enemy {
 
 	// Updates the cactus position based on dino's speed
 	public void update() {
-		setCactusXPosition(getCactusXPosition() - (int) dino.getDinoSpeedX());
+		setCactusXPosition(getCactusXPosition() - (int) dino.getDinoSpeed());
 	}
 
 	// Draws the cactus on the screen

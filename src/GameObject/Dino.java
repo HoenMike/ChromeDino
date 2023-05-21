@@ -24,8 +24,8 @@ public class Dino extends ScoringSystem {
 
 	private float dinoYPosition;
 	private float dinoXPosition;
-	private float dinoSpeedX;
-	private float dinoSpeedY;
+	private float dinoSpeed;
+	private float dinoJumpStrength;
 	private Rectangle dinoCollisionShape;
 
 	private int state = NORMAL_RUN;
@@ -95,16 +95,9 @@ public class Dino extends ScoringSystem {
 				setState(NORMAL_RUN);
 			}
 		} else {
-			setDinoSpeedY(getDinoSpeedY() + GRAVITY);
-			setDinoYPosition(getInitialYPosition() + getDinoSpeedY());
+			setDinoJumpStrength(getDinoJumpStrength() + GRAVITY);
+			setDinoYPosition(getInitialYPosition() + getDinoJumpStrength());
 		}
-	}
-
-	public boolean whatScore() {
-		if (getScore() <= 50) {
-			return false;
-		}
-		return true;
 	}
 
 	// Makes the Dino jump if it is on the ground
@@ -113,8 +106,8 @@ public class Dino extends ScoringSystem {
 			if (jumpSound != null) {
 				jumpSound.play();
 			}
-			setDinoSpeedY(-7.5f);
-			setDinoYPosition(getInitialYPosition() + getDinoSpeedY());
+			setDinoJumpStrength(-7.5f);
+			setDinoYPosition(getInitialYPosition() + getDinoJumpStrength());
 			setState(JUMPING);
 		}
 	}
@@ -122,8 +115,8 @@ public class Dino extends ScoringSystem {
 	// Makes the Dino crouch or stand up
 	public void crouch(boolean isCrouch) {
 		if (getState() == JUMPING) {
-			setDinoSpeedY(7.5f);
-			setDinoYPosition(getInitialYPosition() + getDinoSpeedY());
+			setDinoJumpStrength(7.5f);
+			setDinoYPosition(getInitialYPosition() + getDinoJumpStrength());
 			setState(NORMAL_RUN);
 		}
 		if (isCrouch) {
@@ -171,12 +164,12 @@ public class Dino extends ScoringSystem {
 	}
 
 	// Getters and setters
-	public float getDinoSpeedX() {
-		return dinoSpeedX;
+	public float getDinoSpeed() {
+		return dinoSpeed;
 	}
 
-	public void setDinoSpeedX(float dinoSpeedX) {
-		this.dinoSpeedX = dinoSpeedX;
+	public void setDinoSpeed(float dinoSpeed) {
+		this.dinoSpeed = dinoSpeed;
 	}
 
 	public float getInitialYPosition() {
@@ -195,12 +188,12 @@ public class Dino extends ScoringSystem {
 		this.dinoXPosition = dinoXPosition;
 	}
 
-	public float getDinoSpeedY() {
-		return dinoSpeedY;
+	public float getDinoJumpStrength() {
+		return dinoJumpStrength;
 	}
 
-	public void setDinoSpeedY(float dinoSpeedY) {
-		this.dinoSpeedY = dinoSpeedY;
+	public void setDinoJumpStrength(float dinoJumpStrength) {
+		this.dinoJumpStrength = dinoJumpStrength;
 	}
 
 	public int getState() {
