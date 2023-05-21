@@ -24,7 +24,7 @@ public class Dino extends ScoringSystem {
 
 	private float dinoYPosition;
 	private float dinoXPosition;
-	private float dinoSpeedX;
+	private float dinoSpeed;
 	private float dinoSpeedY;
 	private Rectangle dinoCollisionShape;
 
@@ -171,12 +171,12 @@ public class Dino extends ScoringSystem {
 	}
 
 	// Getters and setters
-	public float getDinoSpeedX() {
-		return dinoSpeedX;
+	public float getDinoSpeed() {
+		return dinoSpeed;
 	}
 
-	public void setDinoSpeedX(float dinoSpeedX) {
-		this.dinoSpeedX = dinoSpeedX;
+	public void setDinoSpeed(float dinoSpeed) {
+		this.dinoSpeed = dinoSpeed;
 	}
 
 	public float getInitialYPosition() {

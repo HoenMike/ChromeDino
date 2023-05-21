@@ -2,7 +2,7 @@ package GameObject;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.Color;
+// import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public class Pterosaurs extends Enemy {
@@ -35,7 +35,7 @@ public class Pterosaurs extends Enemy {
 
     // Updates the pterosaurs position based on dino's speed
     public void update() {
-        setPterosaursXPosition(getPterosaursXPosition() - (int) dino.getDinoSpeedX());
+        setPterosaursXPosition(getPterosaursXPosition() - (int) dino.getDinoSpeed());
     }
 
     // Draws the pterosaurs on the screen

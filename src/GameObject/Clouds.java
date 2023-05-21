@@ -50,10 +50,10 @@ public class Clouds {
 	public void update() {
 		Iterator<ImageCloud> itr = listCloud.iterator();
 		ImageCloud firstElement = itr.next();
-		firstElement.setPosX(firstElement.getPosX() - dino.getDinoSpeedX() / 8);
+		firstElement.setPosX(firstElement.getPosX() - dino.getDinoSpeed() / 8);
 		while (itr.hasNext()) {
 			ImageCloud element = itr.next();
-			element.setPosX(element.getPosX() - dino.getDinoSpeedX() / 8);
+			element.setPosX(element.getPosX() - dino.getDinoSpeed() / 8);
 		}
 		if (firstElement.getPosX() < -cloud.getWidth()) {
 			listCloud.remove(firstElement);
