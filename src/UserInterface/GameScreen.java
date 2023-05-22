@@ -163,7 +163,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			}
 		}
 
-		// Check for ESC key press
+		// ESC to pause
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			if (getGameState() != START_STATE) {
 				setGameState(START_STATE);
@@ -181,7 +181,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	}
 
 	public void keyTyped(KeyEvent e) {
-   // TODO document why this method is empty
  	}
 
 	private void resetGame() {
