@@ -38,7 +38,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	public GameScreen() {
 		setDino(new Dino());
 		setGround(new Ground(GameWindow.SCREEN_WIDTH, getDino()));
-		getDino().setDinoSpeedX(7f);
+		getDino().setDinoSpeed(7f);
 		setReplayButtonImage(Resource.getResourceImage("data/replayButton.png"));
 		setGameOverButtonImage(Resource.getResourceImage("data/gameOverText.png"));
 		setScoringSystem(new ScoringSystem());
@@ -67,11 +67,12 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			if (currentTime - getLastScoreUpdateTime() >= SCORE_UPDATE_INTERVAL) {
 				getScoringSystem().increaseScore(1);
 				setLastScoreUpdateTime(currentTime);
-				if (getDino().getDinoSpeedX() <= 24) {
-					getDino().setDinoSpeedX(getDino().getDinoSpeedX() + 0.01f);
+				if (getDino().getDinoSpeed() <= 24) {
+					getDino().setDinoSpeed(getDino().getDinoSpeed() + 0.02f);
 				}
 			}
 		}
+		System.out.println("Speed: " + getDino().getDinoSpeed());
 	}
 
 	public void paint(Graphics g) {
@@ -163,7 +164,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			}
 		}
 
-		// ESC to pause
+		// ESC to reset game
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			if (getGameState() != START_STATE) {
 				setGameState(START_STATE);

@@ -38,7 +38,7 @@ public class Ground extends GameObj {
 	public void update() {
 		Iterator<ImageGround> itr = getListGrounds().iterator();
 		ImageGround firstGround = itr.next();
-		firstGround.setXPosition(firstGround.getXPosition() - getDino().getDinoSpeedX());
+		firstGround.setXPosition(firstGround.getXPosition() - getDino().getDinoSpeed());
 		float previousPosX = firstGround.getXPosition();
 		while (itr.hasNext()) {
 			ImageGround element = itr.next();
