@@ -104,13 +104,11 @@ public class Ground extends GameObj {
 	}
 
 	public Rectangle getCollision() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getCollision'");
+		throw new UnsupportedOperationException("don't need");
 	}
 
 	public boolean isOutOfScreen() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'isOutOfScreen'");
+		throw new UnsupportedOperationException("don't need");
 	}
 
 	// Getters and setters
