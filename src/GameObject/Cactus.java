@@ -22,7 +22,7 @@ public class Cactus extends GameObj {
 
 	// Updates the cactus position based on dino's speed
 	public void update() {
-		setCactusXPosition(getCactusXPosition() - (int) getDino().getDinoSpeedX());
+		setCactusXPosition(getCactusXPosition() - (int) getDino().getDinoSpeed());
 	}
 
 	// Draws the cactus on the screen

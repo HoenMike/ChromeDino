@@ -43,7 +43,7 @@ public class GameWindow extends JFrame {
 	public static void main(String[] args) {
 		new GameWindow().startGame();
 	}
-
+ 
 	// Getters and setters
 	
 	private GameScreen getGameScreen() {

@@ -28,7 +28,7 @@ public class Pterosaurs extends GameObj {
 
     // Updates the pterosaurs position based on dino's speed
     public void update() {
-        setPterosaursXPosition(getPterosaursXPosition() - (int) getDino().getDinoSpeedX());
+        setPterosaursXPosition(getPterosaursXPosition() - (int) getDino().getDinoSpeed());
     }
 
     // Draws the pterosaurs on the screen

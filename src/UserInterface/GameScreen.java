@@ -38,7 +38,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	public GameScreen() {
 		setDino(new Dino());
 		setGround(new Ground(GameWindow.SCREEN_WIDTH, getDino()));
-		getDino().setDinoSpeedX(7f);
+		getDino().setDinoSpeed(7f);
 		setReplayButtonImage(Resource.getResourceImage("data/replayButton.png"));
 		setGameOverButtonImage(Resource.getResourceImage("data/gameOverText.png"));
 		setScoringSystem(new ScoringSystem());
@@ -72,6 +72,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				}
 			}
 		}
+		System.out.println("Speed: " + getDino().getDinoSpeed());
 	}
 
 	public void paint(Graphics g) {
@@ -163,7 +164,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			}
 		}
 
-		// Check for ESC key press
+		// ESC to reset game
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			if (getGameState() != START_STATE) {
 				setGameState(START_STATE);

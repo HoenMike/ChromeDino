@@ -38,7 +38,7 @@ public class Ground extends GameObj {
 	public void update() {
 		Iterator<ImageGround> itr = getListGrounds().iterator();
 		ImageGround firstGround = itr.next();
-		firstGround.setXPosition(firstGround.getXPosition() - getDino().getDinoSpeedX());
+		firstGround.setXPosition(firstGround.getXPosition() - getDino().getDinoSpeed());
 		float previousPosX = firstGround.getXPosition();
 		while (itr.hasNext()) {
 			ImageGround element = itr.next();
@@ -104,13 +104,11 @@ public class Ground extends GameObj {
 	}
 
 	public Rectangle getCollision() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getCollision'");
+		throw new UnsupportedOperationException("don't need");
 	}
 
 	public boolean isOutOfScreen() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'isOutOfScreen'");
+		throw new UnsupportedOperationException("don't need");
 	}
 
 	// Getters and setters

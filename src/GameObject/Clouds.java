@@ -50,10 +50,10 @@ public class Clouds extends GameObj {
 	public void update() {
 		Iterator<ImageCloud> itr = getListCloud().iterator();
 		ImageCloud firstElement = itr.next();
-		firstElement.setPosX(firstElement.getPosX() - getDino().getDinoSpeedX() / 8);
+		firstElement.setPosX(firstElement.getPosX() - getDino().getDinoSpeed() / 8);
 		while (itr.hasNext()) {
 			ImageCloud element = itr.next();
-			element.setPosX(element.getPosX() - getDino().getDinoSpeedX() / 8);
+			element.setPosX(element.getPosX() - getDino().getDinoSpeed() / 8);
 		}
 		if (firstElement.getPosX() < -getCloud().getWidth()) {
 			getListCloud().remove(firstElement);
