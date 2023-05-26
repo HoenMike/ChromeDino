@@ -67,7 +67,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			if (currentTime - getLastScoreUpdateTime() >= SCORE_UPDATE_INTERVAL) {
 				getScoringSystem().increaseScore(1);
 				setLastScoreUpdateTime(currentTime);
-				if (getDino().getDinoSpeedX() <= 24) {
+				if (getDino().getDinoSpeedX() <= 21) {
 					getDino().setDinoSpeedX(getDino().getDinoSpeedX() + 0.01f);
 				}
 			}
@@ -181,7 +181,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	}
 
 	public void keyTyped(KeyEvent e) {
-   // TODO document why this method is empty
  	}
 
 	private void resetGame() {
