@@ -1,3 +1,9 @@
+/* Name: Group 5
+ Member names & IU code:
+	Mai Nguyên Hoàng – ITITIU21208
+	Nguyễn Minh Duy – ITITIU21186
+ Purpose: Chrome Dino game for OOP Lab Project
+*/
 package GameObject;
 
 import java.awt.Graphics;
@@ -97,7 +103,6 @@ public class Clouds extends GameObj {
 	}
 
 	public boolean isOutOfScreen() {
-		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'isOutOfScreen'");
 	}
 
